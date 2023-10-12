@@ -3,7 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import info
 #import main
-
+import Socket
 
 # Browse the path
 def browse_path_input():
@@ -64,7 +64,7 @@ pathframe.pack(padx=10, pady=10)
 
 # ROW 2 (OUTPUT PATH)--------------------------------------------------------------------------------(start)
 # Lable (output path)
-location_lable = tk.Label(pathframe, text="File Destination:", font=custom_font)
+location_lable = tk.Label(pathframe, text="Output Destination:", font=custom_font)
 location_lable.grid(row=1, column=0, padx=10, sticky="w")
 
 # Entry widget to display the selected directory path (output path)
