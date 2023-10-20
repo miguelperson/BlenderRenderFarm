@@ -3,7 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import info
 #import main
-import Socket
+import socket
 
 # Browse the path
 def browse_path_input():
@@ -28,7 +28,7 @@ def send_info():
     result = info.process_input(path_input, path_output, r.get())
     # Display the result in a message box
     messagebox.showinfo("Result", result)
-
+    
 # Window
 root = tk.Tk()
 root.title("Amazing Brain Draining Project")
@@ -92,7 +92,7 @@ radioframe.pack(padx=10, pady=10)
 # Grid radio buttons(video/image)______________________________________________________________________(end)
 
 # Submit button (sends input info)
-submit_button = tk.Button(root, text="Submit", font=custom_font, command= send_info, width=10, height=2)
+submit_button = tk.Button(root, text="Submit", font=custom_font, command= send_info, width=10, height=2) # button event handler executes the 'send_info' function when clicked
 submit_button.pack(padx=10, pady=10)
 
 
