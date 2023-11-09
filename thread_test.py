@@ -1,48 +1,48 @@
 import threading
+import queue
 import time
-import icecream as ic
 
-frames = 10
-q1 = True
-q2 = True
-rendered = 0
+# Function to distribute numbers to queues
+def number_distributor(queue1, queue2):
+    for number in range(1, 11):
+        if number % 2 == 1:
+            queue1.put(number)
+            print(f"Distributed {number} to Queue 1")
+        else:
+            queue2.put(number)
+            print(f"Distributed {number} to Queue 2")
+        time.sleep(1)  # Simulate processing time
 
-def move_frame():
-    rendered = input("Finished frame: ")
-    return
+# Function to consume numbers from a queue
+def number_consumer(queue):
+    while True:
+        try:
+            number = queue.get(timeout=1)
+            print(f"Consumed {number} from {queue.name}")
+            # Simulate processing here
+            time.sleep(1)
+            queue.task_done()
+        except queue.Empty:
+            print(f"{queue.name} is empty. Waiting...")
+            time.sleep(1)
 
-def queue1(num):
-    return
+# Create two queues
+queue1 = queue.Queue()
+queue2 = queue.Queue()
+queue1.name = "Queue 1"
+queue2.name = "Queue 2"
 
-def queue2(num):
-    return
+# Create distributor and consumer threads
+distributor_thread = threading.Thread(target=number_distributor, args=(queue1, queue2))
+consumer_thread1 = threading.Thread(target=number_consumer, args=(queue1,))
+consumer_thread2 = threading.Thread(target=number_consumer, args=(queue2))
 
-rendered_frames = threading.Thread(target=move_frame, daemon=True)    
+# Start the threads
+distributor_thread.start()
+consumer_thread1.start()
+consumer_thread2.start()
 
-i=1
-while (i<=frames):
-    time.sleep(1)
-    if (q1==True):
-        t1 = threading.Thread(target=queue1, daemon=True, args=(i,))
-        q1 = False
-        i += 1
-    if (q2==True):
-        t2 = threading.Thread(target=queue2, daemon=True, args=(i,))
-        q2 = False
-        i += 1
-    else:
-        ic(f"Queue 1: {i}")
-        ic(f"Queue 2: {i}")
- 
-    # starting thread 1
-    t1.start()
-    # starting thread 2
-    t2.start()
- 
-    # wait until thread 1 is completely executed
-    t1.join()
-    # wait until thread 2 is completely executed
-    t2.join()
- 
-    # both threads completely executed
-    print("Done!")
+# Wait for all threads to finish (you may use a different termination mechanism)
+distributor_thread.join()
+consumer_thread1.join()
+consumer_thread2.join()
