@@ -1,9 +1,12 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import *
 import info
 #import main
 import socket
+
+import SocketConnection # this should allow us to utilize the functions created within the separate socketfile
 
 # Browse the path
 def browse_path_input():
@@ -31,9 +34,10 @@ def send_info():
     
 # Window
 root = tk.Tk()
-root.title("Amazing Brain Draining Project")
+root.title("Blender Render Farm")
 root.geometry("700x300")
 custom_font=('Roboto', 12)
+# root.configure(bg = "#3D5A6C") # adding this for later to keep stylizing at some point
 
 #variables
 path_input = ""

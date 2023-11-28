@@ -1,4 +1,5 @@
 import socket
+import gui # allos us to use functions created within the gui code
 # server side implementation of socket code
 host = '192.168.99.50'
 port = 8080
@@ -20,8 +21,3 @@ for i in range(totalClient): # connecting ricardos computer to the server
 
 def connection():
     print('placeholder')
-
-
-
-
-# THIS IS AN EXAMPLE PUSH PLEASE DISREGARD
