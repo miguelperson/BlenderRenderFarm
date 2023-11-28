@@ -1,10 +1,13 @@
 import socket
 import gui # allos us to use functions created within the gui code
+import os # imports os handling library
 # server side implementation of socket code
 IP = socket.gethostbyname(hostname) # gets the IP address of the server node
 host = IP 
 port = 8080
+print('Server IP address is:'+IP)
 totalClient = int(input('Enter number of clients:'))
+
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create 
 sock.bind((host,port))
