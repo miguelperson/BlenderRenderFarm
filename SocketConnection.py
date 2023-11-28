@@ -28,6 +28,24 @@ for conn in connections:
         continue
     filename = 'output'+str(fileno)+'.txt'
     fileno = fileno+1
+    fo = open(filename, "w")
+    while data:
+        if not data:
+            break
+        else:
+            fo.write(data)
+            data = conn[0].recv(1024).decode()
+            
+    print()
+    print('Recieving file from client',idx) # says the file that we recieved from the file from client
+    print()
+    print('Recieved successfully! New filename is:',filename)
+    fo.close()
+    
+# closing the connections
+for conn in connections:
+    conn[0].close()
+    
     
 
 # creating a new file at server end and writig the data
