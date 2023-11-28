@@ -1,7 +1,8 @@
 import socket
 import gui # allos us to use functions created within the gui code
 # server side implementation of socket code
-host = '192.168.99.50'
+IP = socket.gethostbyname(hostname) # gets the IP address of the server node
+host = IP 
 port = 8080
 totalClient = int(input('Enter number of clients:'))
 
