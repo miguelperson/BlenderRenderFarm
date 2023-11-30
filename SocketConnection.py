@@ -9,7 +9,7 @@ print('Server IP address is:'+IP)
 totalClient = int(input('Enter number of clients:'))
 
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets
 sock.bind((host,port))
 sock.listen(totalClient) # has the socket listen for the total number of clients initially given.
 
@@ -28,11 +28,13 @@ for conn in connections:
     # recieving file data
     idx += 1
     data = conn[0].recv(1024).decode
+    
     if not data: 
         continue
-    filename = 'output'+str(fileno)+'.txt'
-    fileno = fileno+1
-    fo = open(filename, "w")
+    # creating a new file at server end and writing the data to prepare for sending
+    filename = 'output'+str(fileno)+'.txt' # starts with file number which increments every time a new file is created
+    fileno = fileno+1 # incrementing the file no variable to change the name the next time around
+    fo = open(filename, "w") # opens the our file with a write operation, already existing data is overwritten, will also create the file if not already existing
     while data:
         if not data:
             break
