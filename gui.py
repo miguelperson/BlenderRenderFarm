@@ -3,10 +3,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import *
 import info
-#import main
 import socket
 
-import SocketConnection # this should allow us to utilize the functions created within the separate socketfile
+
 
 # Browse the path
 def browse_path_input():
