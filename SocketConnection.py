@@ -1,59 +1,29 @@
 import socket
 import gui # allos us to use functions created within the gui code
 import os # imports os handling library
-# server side implementation of socket code
-IP = socket.gethostbyname(hostname) # gets the IP address of the server node
-host = IP 
-port = 8080
-print('Server IP address is:'+IP)
+import threading
+# server side implementation of socket 
+host = socket.gethostbyname(socket.gethostbyname) # gets IP address of server node
+port = 5050 # port 8080 is apparently for HTTPs communications so will play it safe and not run on that port here
+
 totalClient = int(input('Enter number of clients:'))
 
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets
-sock.bind((host,port))
-sock.listen(totalClient) # has the socket listen for the total number of clients initially given.
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
+server.bind((host,port)) # anything connecting to our IP and port is going right into the 'server' socket 
+server.listen(totalClient) # has the socket listen for the total number of clients initially given.
 
-connections = [] # array of connection objects 
+def handle_client(conn, addr): # handles communication between client and server, will use mutithreading
+    pass
 
-print('time to initializa these mother fuckin connections')
+def start(): # code for server to start handling connections
+    server.listen() # listening to connections
+    while True: # infinite loop for reasons
+        conn, addr = server.accept() # code blocks and waits on .accept part of code until new connection occurs and then stores address and then store object allowing to send information back to connection
+        thread = threading.Thread(target=handle_client, args=(conn,addr))
+        thread.start()
+        print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}") # will tell us all the active client connections
+        
 
-for i in range(totalClient): # connecting ricardos computer to the server
-    conn = sock.accept() # accepts socket connection with clients
-    connections.apend(conn) # appending connection to array for the sake of storage and shit
-    print('connected with the client', i+1) # console confirmation of the client being conneced (Ricardo)
-
-fileno = 0
-idx = 0
-for conn in connections:
-    # recieving file data
-    idx += 1
-    data = conn[0].recv(1024).decode
-    
-    if not data: 
-        continue
-    # creating a new file at server end and writing the data to prepare for sending
-    filename = 'output'+str(fileno)+'.txt' # starts with file number which increments every time a new file is created
-    fileno = fileno+1 # incrementing the file no variable to change the name the next time around
-    fo = open(filename, "w") # opens the our file with a write operation, already existing data is overwritten, will also create the file if not already existing
-    while data:
-        if not data:
-            break
-        else:
-            fo.write(data)
-            data = conn[0].recv(1024).decode()
-            
-    print()
-    print('Recieving file from client',idx) # says the file that we recieved from the file from client
-    print()
-    print('Recieved successfully! New filename is:',filename)
-    fo.close()
-    
-# closing the connections
-for conn in connections:
-    conn[0].close()
-    
-    
-
-# creating a new file at server end and writig the data
-def connection():
-    print('placeholder')
+print("[STARTING] Server is starting...")
+start()
