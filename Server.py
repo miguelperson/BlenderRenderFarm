@@ -1,5 +1,5 @@
 import socket
-import Client # allos us to use functions created within the gui code
+#import Client # allos us to use functions created within the gui code
 import os # imports os handling library
 import threading
 # server side implementation of socket 
@@ -18,9 +18,10 @@ def handle_client(conn, addr): # handles communication between client and server
     print(f"[NEW CONNECTION] {addr} conneced.") # tells us who connected, connections will be running concurrently
     connected = True 
     while connected: #waiting to recieve information from client
-        msg_length = msg.conn.recv(HEADER).decode(FORMAT) # inputs how many bytes we need to recieve, conn.recieve is a blocking code so it will wait until something is sent        
+        msg_length = conn.recv(HEADER).decode(FORMAT) # inputs how many bytes we need to recieve, conn.recieve is a blocking code so it will wait until something is sent, byte to string
         msg_length = int(msg_length) # integer of total bytes we're going to be recieving
-        msg = conn.recv(msg_recv).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
+        msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
+        print(f"[{addr}] {msg}")
         if msg == DISCONNECT_MESSAGE:
             connected = False
     conn.close() # closes the connection
