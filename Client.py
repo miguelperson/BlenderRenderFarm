@@ -1,4 +1,7 @@
 import socket
+import os
+
+
 HEADER = 64
 PORT = 5050
 FORMAT = 'utf-8'
@@ -19,6 +22,10 @@ def send(msg):
     client.send(message) # then we send the message
     print(client.recv(2048).decode(FORMAT)) # prints the message recieved from the server to the terminal, put 2048 because server responses are known to be short
     
-send("hello kindman")
-send("Hello buttmuncher")
+def send_file(file_location):
+    file = open(file_location,"rb") # rb -> reading byte mode
+    fize_size = os.path.getsize(file_location) # will give us the file 
+
+send("recieved_image.png".encode()) # gets file name
+send(str(file_size).encode()) # this should be the file size
 send("!DISCONNECT")
