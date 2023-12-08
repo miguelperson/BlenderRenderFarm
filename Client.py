@@ -7,7 +7,7 @@ SERVER = "192.168.99.139" # this would need to be updated if the server IP chang
 ADDR = (SERVER,PORT)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(ADDR)
+client.connect(ADDR) # this connects to the server
 
 def send(msg):
     message = msg.encode(FORMAT) # message is the file we want to send
@@ -17,5 +17,8 @@ def send(msg):
     send_length += b' '* (HEADER - len(send_length)) # b -> byte representation of the blank space
     client.send(send_length) # sending the header
     client.send(message) # then we send the message
+    print(client.recv(2048).decode(FORMAT)) # prints the message recieved from the server to the terminal, put 2048 because server responses are known to be short
     
 send("hello kindman")
+send("Hello buttmuncher")
+send("!DISCONNECT")

@@ -19,11 +19,15 @@ def handle_client(conn, addr): # handles communication between client and server
     connected = True 
     while connected: #waiting to recieve information from client
         msg_length = conn.recv(HEADER).decode(FORMAT) # inputs how many bytes we need to recieve, conn.recieve is a blocking code so it will wait until something is sent, byte to string
-        msg_length = int(msg_length) # integer of total bytes we're going to be recieving
-        msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
-        print(f"[{addr}] {msg}")
-        if msg == DISCONNECT_MESSAGE:
-            connected = False
+        if msg_length:
+            # this is a block just because the first reply from connection is essnetially blank so we want to ensure that e do the other stuff as long as there is stuff in the 
+            msg_length = int(msg_length) # integer of total bytes we're going to be recieving
+            msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
+            print(f"[{addr}] {msg}")
+            if msg == DISCONNECT_MESSAGE:
+                connected = False
+                
+            conn.send(f"message recieved".encode(FORMAT))
     conn.close() # closes the connection
         
 
