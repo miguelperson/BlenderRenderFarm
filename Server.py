@@ -1,5 +1,5 @@
 import socket
-import gui # allos us to use functions created within the gui code
+import Client # allos us to use functions created within the gui code
 import os # imports os handling library
 import threading
 # server side implementation of socket 
