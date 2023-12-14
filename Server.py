@@ -30,7 +30,6 @@ def handle_client(conn, addr): # handles communication between client and server
                 file_bytes = b""
                 if file_bytes[-5:] == b"<END>":
                     done = True
-                    
                 else:
                     file_bytes += data
             if msg == DISCONNECT_MESSAGE:
