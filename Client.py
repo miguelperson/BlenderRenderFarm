@@ -32,6 +32,9 @@ def send_file(file_location):
     data = file.read()
     client.sendall(data) # sends all the data from the file
 
-send("recieved_image.png".encode()) # gets file name
-send(str(file_size).encode()) # this should be the file size
-send("!DISCONNECT")
+def disconnect():
+    send("!DISCONNECT")
+    
+# send("recieved_image.png".encode()) # gets file name
+# send(str(file_size).encode()) # this should be the file size
+# send("!DISCONNECT")
