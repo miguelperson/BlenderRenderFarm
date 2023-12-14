@@ -100,4 +100,5 @@ submit_button = tk.Button(root, text="Submit", font=custom_font, command= send_i
 submit_button.pack(padx=10, pady=10)
 
 
+
 root.mainloop()

@@ -11,6 +11,7 @@ ADDR = (SERVER,PORT)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR) # this connects to the server
+client_IP = socket.gethostbyname(socket.gethostname())
 
 def send(msg):
     message = msg.encode(FORMAT) # message is the file we want to send, encoding it to be good for sending
@@ -24,17 +25,18 @@ def send(msg):
     
 def send_file(file_location):
     file = open(file_location,"rb") # rb -> reading byte mode
-    file_size = os.path.getsize(file_location) # will give us the file 
-    send_size = str(file_size).encode(FORMAT)
-    send_length += b' '* (HEADER - len(send_length)) # b -> byte representation of the blank space
-    client.send("temp_file_name.png".encode()) # sending file name, will want to make a random generator here though
-    client.send(send_size) # sends the header with the file size
+    file_size = os.path.getsize(file_location) # will give us the file size
+    send_length = str(file_size).encode(FORMAT) # stores length as a string for some reason
+    client.send("[placeholder].blend".encode())
+    client.send(str(file_size).encode())
     data = file.read()
-    client.sendall(data) # sends all the data from the file
+    client.sendall(data) # works on sending end, reciever will know file size but doesn't immediately know it
+    client.send(b"<END>") # end tag will indicate end of sending file
 
 def disconnect():
     send("!DISCONNECT")
     
+# send(str(client_IP)) # sends the IP to the server
 # send("recieved_image.png".encode()) # gets file name
 # send(str(file_size).encode()) # this should be the file size
 # send("!DISCONNECT")
