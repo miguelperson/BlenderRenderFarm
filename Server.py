@@ -24,14 +24,6 @@ def handle_client(conn, addr): # handles communication between client and server
             msg_length = int(msg_length) # integer of total bytes we're going to be recieving
             msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
             print(f"[{addr}] {msg}")
-            done = False
-            while not done:            
-                data = client.recv(1024)
-                file_bytes = b""
-                if file_bytes[-5:] == b"<END>":
-                    done = True
-                else:
-                    file_bytes += data
             if msg == DISCONNECT_MESSAGE:
                 connected = False
                 
