@@ -5,7 +5,7 @@ from tkinter import *
 import info
 import socket
 import Client
-import bpy
+
 
 
 

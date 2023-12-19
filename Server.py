@@ -10,6 +10,7 @@ ADDR = (SERVER,port)
 HEADER = 64 # will be the header for the data we want to send
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
+SAVE_PATH = "C:\Users\Miguel Baca\Pictures\BlenderRenderFIles"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
 server.bind(ADDR)
