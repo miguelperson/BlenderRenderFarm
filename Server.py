@@ -23,6 +23,14 @@ def handle_client(conn, addr): # handles communication between client and server
             # this is a block just because the first reply from connection is essnetially blank so we want to ensure that e do the other stuff as long as there is stuff in the 
             msg_length = int(msg_length) # integer of total bytes we're going to be recieving
             msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
+            # SQL line thtat adds project to project table
+
+
+            file = open(msg, "wb") # open recieved file in writing bytes mode
+            file_bytes = b"" # acts as a buffer for the byte stream, might not use
+            
+            
+
             print(f"[{addr}] {msg}")
             if msg == DISCONNECT_MESSAGE:
                 connected = False

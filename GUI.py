@@ -5,6 +5,8 @@ from tkinter import *
 import info
 import socket
 import Client
+import bpy
+
 
 
 # Browse the path
@@ -28,7 +30,7 @@ def browse_path_output():
 def send_info():
     global path_input, path_output
     result = info.process_input(path_input, path_output, r.get()) # video 1 image 2 for 'r' variable
-    send_file(path_input) # this calls the send file functions from the client code
+    send_file(path_input, r.get()) # this calls the send file functions from the client code
     # Display the result in a message box
     messagebox.showinfo("Result", result)
     

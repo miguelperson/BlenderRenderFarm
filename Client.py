@@ -1,5 +1,6 @@
 import socket
 import os
+import info
 
 
 HEADER = 64
@@ -23,8 +24,10 @@ def send(msg):
     client.send(message) # then we send the message
     print(client.recv(2048).decode(FORMAT)) # prints the message recieved from the server to the terminal, put 2048 because server responses are known to be short
     
-def send_file(file_location):
-    file = open(file_location,"rb") # rb -> reading byte mode
+def send_file(file_location, type): # file_location stores file path
+    if type == 1:
+        print('this is a video')
+    file = open(file_location,"rb") # rb -> reading byte mode, file location should end in .blend, will want to add error handling if incorrect file type is sent
     file_size = os.path.getsize(file_location) # will give us the file size
     send_length = str(file_size).encode(FORMAT) # stores length as a string for some reason
     client.send("[placeholder].blend".encode())
