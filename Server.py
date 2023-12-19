@@ -2,6 +2,7 @@ import socket
 #import Client # allos us to use functions created within the gui code
 import os # imports os handling library
 import threading
+import keyboard
 # server side implementation of socket 
 SERVER = socket.gethostbyname(socket.gethostname()) # gets IP address of server node
 port = 5050 # port 8080 is apparently for HTTPs communications so will play it safe and not run on that port here
@@ -47,6 +48,9 @@ def start(): # code for server to start handling connections
         thread = threading.Thread(target=handle_client, args=(conn,addr))
         thread.start()
         print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}") # will tell us all the active client connections
+        if keyboard.keyboard.is_pressed('u'):
+            print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}")
+            
         
 
 print("[STARTING] Server is starting...")
