@@ -3,12 +3,14 @@ import os
 import info
 
 
+
 HEADER = 64
 PORT = 5050
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 SERVER = "192.168.99.139" # this would need to be updated if the server IP changes
 ADDR = (SERVER,PORT)
+counter = 0; # will be used to keep track of the files sent
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR) # this connects to the server
@@ -30,13 +32,15 @@ def send_file(file_location, type): # file_location stores file path
     file = open(file_location,"rb") # rb -> reading byte mode, file location should end in .blend, will want to add error handling if incorrect file type is sent
     file_size = os.path.getsize(file_location) # will give us the file size
     send_length = str(file_size).encode(FORMAT) # stores length as a string for some reason
-    client.send("[placeholder].blend".encode())
+    
+    client.send(f"renderFile{counter}.blend".encode())
+    ++counter
     client.send(str(file_size).encode())
     data = file.read()
     client.sendall(data) # works on sending end, reciever will know file size but doesn't immediately know it
     client.send(b"<END>") # end tag will indicate end of sending file
 
-def disconnect():
+def disconnect(): # called by GUI to close connection
     send("!DISCONNECT")
     
 # send(str(client_IP)) # sends the IP to the server
