@@ -10,7 +10,8 @@ FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 
 # Specify the predetermined file path where you want to save the received files
-SAVE_PATH = "/path/to/predetermined/folder/"
+SAVE_PATH = "C:\\Users\\Miguel Baca\\Pictures\\BlenderRenderFIles"
+
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)

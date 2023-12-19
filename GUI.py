@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import *
 import info
 import socket
-import Client
+from Client import *
 
 
 
