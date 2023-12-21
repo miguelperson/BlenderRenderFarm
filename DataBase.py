@@ -10,19 +10,20 @@ mydb = mysql.connector.connect(
 
 # Create a cursor object
 mycursor = mydb.cursor()
+"""
 #----------------------------------------------------------------------------------1
-# Create Database renderdb
-#mycursor.execute("CREATE DATABASE renderdb")
+#Create Database renderdb
+mycursor.execute("CREATE DATABASE renderdb")
 
 #----------------------------------------------------------------------------------2
 #Create Teables
-#mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, project_name VARCHAR(255), client VARCHAR(100), frames_total smallint UNSIGNED, start_frame smallint UNSIGNED, end_frame smallint UNSIGNED)")
-#mycursor.execute("CREATE TABLE workers (worker VARCHAR(100), available TINYINT(1), projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))") #TINYINT(1)=true
-#mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
+mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, project_name VARCHAR(255), client VARCHAR(100), frames_total smallint UNSIGNED, start_frame smallint UNSIGNED, end_frame smallint UNSIGNED)")
+mycursor.execute("CREATE TABLE workers (worker VARCHAR(100), available TINYINT(1), projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))") #TINYINT(1)=true
+mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
 #----------------------------------------------------------------------------------
+"""
 
-
-
+"""
 mycursor.execute("SHOW TABLES")
 
 for x in mycursor:
@@ -33,3 +34,17 @@ result = mycursor.fetchall()
 for row in result:
     print(row)
 
+"""
+
+mycursor.execute("SELECT * FROM project")
+
+# Fetch all rows from the cursor
+result = mycursor.fetchall()
+
+# Print the fetched data
+for row in result:
+    print(row)
+
+
+mydb.commit()
+mydb.close()
