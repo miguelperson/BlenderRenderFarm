@@ -1,13 +1,15 @@
 import socket
 #import Client # allos us to use functions created within the gui code
-import os # imports os handling library
+import os
+from sqlite3 import connect # imports os handling library
 import threading
+import tqdm
 
 # server side implementation of socket 
 SERVER = socket.gethostbyname(socket.gethostname()) # gets IP address of server node
 port = 5050 # port 8080 is apparently for HTTPs communications so will play it safe and not run on that port here
 ADDR = (SERVER,port)
-HEADER = 64 # will be the header for the data we want to send
+HEADER = 1024 # will be the header for the data we want to send
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 SAVE_PATH = "C:\Users\Miguel Baca\Pictures\BlenderRenderFIles"
@@ -20,24 +22,25 @@ def handle_client(conn, addr): # handles communication between client and server
     print(f"[NEW CONNECTION] {addr} conneced.") # tells us who connected, connections will be running concurrently
     connected = True 
     while connected: #waiting to recieve information from client
-        msg_length = conn.recv(HEADER).decode(FORMAT) # inputs how many bytes we need to recieve, conn.recieve is a blocking code so it will wait until something is sent, byte to string
-        if msg_length: # detecting when the client sends something
-            # this is a block just because the first reply from connection is essnetially blank so we want to ensure that e do the other stuff as long as there is stuff in the 
-            msg_length = int(msg_length) # integer of total bytes we're going to be recieving
-            msg = conn.recv(msg_length).decode(FORMAT) # msg now holds the 'message' holding all the contents from the client
-            # SQL line thtat adds project to project table
-
-
-            file = open(msg, "wb") # open recieved file in writing bytes mode
-            file_bytes = b"" # acts as a buffer for the byte stream, might not use
-            
-            
-
-            print(f"[{addr}] {msg}")
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
-                
-            conn.send(f"message recieved".encode(FORMAT))
+        file_name = conn.recv(HEADER).decode() # the .recv() is a blocking code, will also recieve the file name first
+        if file_name == DISCONNECT_MESSAGE:
+            connected = False
+            break
+        print(file_name) # just pringing the name to console
+        file_size = conn.recv(1024).decode()
+        print(file_size) # prints file size to the console 
+        file = open(file_name, "wb") # kinda creating a file with the name file_name, oging to concatenate bytes to it now
+        file_bytes = b""
+        progress = tdqm.tdqm(unit="B", unit_scale=True, unit_divisor=1000, total=int(file_size)) # creating progress bar
+        done = False
+        while not done:
+            data = conn.recv(1024) # transmits data in chunks to make it more efficient
+            if file_bytes[-5:] == b"<END>":
+                done = True
+            else:
+                file_bytes += data
+            progress.update(1024) # updates the progress bar
+        file.write(file_bytes) # writes the file bytes to the file variable    
     conn.close() # closes the connection
         
 

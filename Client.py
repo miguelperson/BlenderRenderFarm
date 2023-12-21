@@ -31,8 +31,8 @@ def send_file(file_location, type): # file_location stores file path
     print('place holder')
     file = open(file_location, "rb")
     file_size = os.path.getsize(file_location) # gets the size of the file
-    client.send(f"Project{random.randrange(99999)}.blend".encode(FORMAT)) # sending the new file name, adds random int at the 
-    client.send(str(file_size).encode(FORMAT)) # sending file size
+    client.send(f"Project{random.randrange(99999)}.blend".encode()) # sending the new file name, adds random int at the 
+    client.send(str(file_size).encode()) # sending file size
     data = file.read() #reading all the bytes
     client.sendall(data) # sending all the data
     client.send(b"<END>")  # end tag to identify the end of the byte stream 
