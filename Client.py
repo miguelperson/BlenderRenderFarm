@@ -1,3 +1,4 @@
+import random
 import socket
 import os
 import info
@@ -27,19 +28,15 @@ def send(msg):
     print(client.recv(2048).decode(FORMAT)) # prints the message recieved from the server to the terminal, put 2048 because server responses are known to be short
     
 def send_file(file_location, type): # file_location stores file path
-    if type == 1:
-        print('this is a video')
-    file = open(file_location,"rb") # rb -> reading byte mode, file location should end in .blend, will want to add error handling if incorrect file type is sent
-    file_size = os.path.getsize(file_location) # will give us the file size
-    send_length = str(file_size).encode(FORMAT) # stores length as a string for some reason
+    print('place holder')
+    file = open(file_location, "rb")
+    file_size = os.path.getsize(file_location) # gets the size of the file
+    client.send(f"Project{random.randrange(99999)}.blend".encode(FORMAT)) # sending the new file name, adds random int at the 
+    client.send(str(file_size).encode(FORMAT)) # sending file size
+    data = file.read() #reading all the bytes
+    client.sendall(data) # sending all the data
+    client.send(b"<END>")  # end tag to identify the end of the byte stream 
     
-    client.send(f"renderFile{counter}.blend".encode())
-    ++counter
-    client.send(str(file_size).encode())
-    data = file.read()
-    client.sendall(data) # works on sending end, reciever will know file size but doesn't immediately know it
-    client.send(b"<END>") # end tag will indicate end of sending file
-
 def disconnect(): # called by GUI to close connection
     send("!DISCONNECT")
     
