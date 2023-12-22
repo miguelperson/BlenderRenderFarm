@@ -5,7 +5,7 @@ client = "ClientA"
 frames_total = 1000
 start_frame = 1
 end_frame = 1000
-projectID = 3
+projectID = 1
 
 # Send gathered information to the database
 
@@ -13,4 +13,6 @@ projectID = 3
 #insert_into_workers(worker, available, projectID)
 #insert_into_render(frame_number, projectID)
 
-remove_from_project(projectID,)
+#remove_from_project(projectID,)
+
+reset_auto_increment(projectID,)

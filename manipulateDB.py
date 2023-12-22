@@ -21,7 +21,7 @@ def sql_exe(sql,val):
     except mysql.connector.Error as err:
         print("Error:", err)
 
-
+#Insert new row
 def insert_into_project(project_name, client, frames_total, start_frame, end_frame):
     sql = "INSERT INTO project (project_name, client, frames_total, start_frame, end_frame) VALUES (%s, %s, %s, %s, %s)"
     val = (project_name, client, frames_total, start_frame, end_frame)
@@ -38,9 +38,16 @@ def insert_into_render(frame_number, projectID):
     val = (frame_number, projectID)
     sql_exe(sql,val)
         
-
+#Delete the row
 def remove_from_project(projectID,):
     sql = "DELETE FROM project WHERE projectID = %s"
     val = (projectID,)  
     sql_exe(sql,val)
+
+#Reset auto-increment value
+def reset_auto_increment(projectID,):       
+    sql = "ALTER TABLE project AUTO_INCREMENT = %s"
+    val = (projectID,)  
+    sql_exe(sql,val)
+        
         
