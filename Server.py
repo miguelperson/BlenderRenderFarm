@@ -4,6 +4,7 @@ import os
 from sqlite3 import connect # imports os handling library
 import threading
 import tqdm
+from manipulateDB import *
 
 # server side implementation of socket 
 SERVER = socket.gethostbyname(socket.gethostname()) # gets IP address of server node
@@ -19,7 +20,7 @@ server.bind(ADDR)
 
 
 def handle_client(conn, addr): # handles communication between client and server, will use mutithreading
-    print(f"[NEW CONNECTION] {addr} conneced.") # tells us who connected, connections will be running concurrently
+    print(f"[NEW CONNECTION] {addr} connected.") # tells us who connected, connections will be running concurrently
     connected = True 
     while connected: #waiting to recieve information from client
         file_name = conn.recv(HEADER).decode() # the .recv() is a blocking code, will also recieve the file name first
@@ -41,6 +42,8 @@ def handle_client(conn, addr): # handles communication between client and server
                 file_bytes += data
             progress.update(1024) # updates the progress bar
         file.write(file_bytes) # writes the file bytes to the file variable    
+        # add line to execute sql command to insert into project table
+
     conn.close() # closes the connection
         
 
