@@ -44,6 +44,16 @@ def remove_from_project(projectID,):
     val = (projectID,)  
     sql_exe(sql,val)
 
+def remove_from_workers(projectID):
+    sql = "DELETE FROM project WHERE projectID = %s"
+    val = (projectID,)  
+    sql_exe(sql,val)
+
+def remove_from_render(projectID,):
+    sql = "DELETE FROM project WHERE projectID = %s"
+    val = (projectID,)  
+    sql_exe(sql,val)
+
 #Reset auto-increment value
 def reset_auto_increment(projectID,):       
     sql = "ALTER TABLE project AUTO_INCREMENT = %s"
