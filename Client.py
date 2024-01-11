@@ -28,14 +28,7 @@ def send(msg):
     print(client.recv(2048).decode(FORMAT)) # prints the message recieved from the server to the terminal, put 2048 because server responses are known to be short
     
 def send_file(file_location, type): # file_location stores file path
-    print('place holder')
-    file = open(file_location, "rb")
-    file_size = os.path.getsize(file_location) # gets the size of the file
-    client.send(f"Project{random.randrange(99999)}.blend".encode()) # sending the new file name, adds random int at the 
-    client.send(str(file_size).encode()) # sending file size
-    data = file.read() #reading all the bytes
-    client.sendall(data) # sending all the data
-    client.send(b"<END>")  # end tag to identify the end of the byte stream 
+    print('this is a place holder')
     
 def disconnect(): # called by GUI to close connection
     send("!DISCONNECT")

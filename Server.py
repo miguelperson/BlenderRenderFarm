@@ -13,7 +13,7 @@ ADDR = (SERVER,port)
 HEADER = 1024 # will be the header for the data we want to send
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SAVE_PATH = "C:\Users\Miguel Baca\Pictures\BlenderRenderFIles"
+SAVE_PATH = "C:\Users\Miguel Baca\Pictures\BlenderRenderFiles"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
 server.bind(ADDR)
@@ -22,7 +22,7 @@ server.bind(ADDR)
 def handle_client(conn, addr): # handles communication between client and server, will use mutithreading
     print(f"[NEW CONNECTION] {addr} connected.") # tells us who connected, connections will be running concurrently
     connected = True 
-    while connected: #waiting to recieve information from client
+    while connected: # waiting to recieve information from client, connection will remain constant until disconnect message sent
         file_name = conn.recv(HEADER).decode() # the .recv() is a blocking code, will also recieve the file name first
         if file_name == DISCONNECT_MESSAGE:
             connected = False
