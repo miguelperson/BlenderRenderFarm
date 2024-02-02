@@ -1,7 +1,6 @@
 import random
 import socket
 import os
-import customtkinter
 import socket
 # import ClientCustomGUI # this will be so we can pass error functions to the front end if needed
 
@@ -25,4 +24,5 @@ def connectionFunction(error_callback=None):
             error_callback()
         return  # Exit the function or handle the error as needed
 
-    # Rest of your code...
+def sendFile(file_path, firstFrame, lastFrame):
+    print('placeholder for send function')
