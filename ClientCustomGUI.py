@@ -11,7 +11,8 @@ import customtkinter
 #2e2e2e
 path_output=""
 render_output=""
-frameRange=""
+start_frame = 0
+end_frame = 0
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -37,8 +38,16 @@ def printThing():
         render_output = file_path
         entry2.insert(0,render_output)
 def frameChecker(stringOfSomething):
-    framesToRender = frameEntry.get().split('-')
+    framesToRender = frameEntry.get().replace(" ", "")
+    print(framesToRender)
+    framesToRender = framesToRender.split('-')
     if len(framesToRender) == 2 and framesToRender[0].isnumeric() == True and framesToRender[1].isnumeric() == True:
+        global start_frame
+        global end_frame
+        start_frame = int(framesToRender[0])
+        end_frame = int(framesToRender[1])
+        print(start_frame)
+        print(end_frame)
         return True # input for the frames range is valid
     else:
         return False
@@ -59,6 +68,8 @@ def submission():
     print(entry1.get())
     print(entry2.get())
     print(frameEntry.get())
+    print(start_frame)
+    print(end_frame)
 
 frame = customtkinter.CTkFrame(master=root)
 
