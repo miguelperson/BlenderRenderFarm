@@ -57,6 +57,8 @@ def inputErrorMessage(errorType):
         messagebox.showerror('Error', 'Please ensure that blend file/output file path inputs are valid')  
     elif errorType == 2: # indicates invalid frames string
         messagebox.showerror('Error','butt inspection will begin immediately')
+    elif errorType == 3:
+        messagebox.showerror('Error', 'ensure that the desired start frame is a lower number than the end frame')
 
 def submission():
     if (entry1.get() and entry2.get() and frameEntry.get()) =="": # this statement checks that all the textfields are filled out, if one is missing execute if statement
@@ -65,11 +67,16 @@ def submission():
     elif frameChecker(frameEntry.get()) == False: # after first if check that the frame number entry thing is a valid input
         print('please ensure the proper format for your frame entry')
         inputErrorMessage(2)
-    print(entry1.get())
-    print(entry2.get())
-    print(frameEntry.get())
-    print(start_frame)
-    print(end_frame)
+    elif start_frame > end_frame:
+        print('this isnt done right man')
+        inputErrorMessage(3)
+    else: #this would be the block we execute if we pass all the previous conditions
+        print('place holder where we will execute the data transmission segment')
+#    print(entry1.get())
+#    print(entry2.get())
+#    print(frameEntry.get())
+#    print(start_frame)
+#    print(end_frame)
 
 frame = customtkinter.CTkFrame(master=root)
 
