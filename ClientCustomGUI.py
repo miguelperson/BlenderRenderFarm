@@ -3,7 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import ctypes as ct
 import customtkinter
-from ClientBackEnd import connectionFunction  # importing client backend so we can call functions from the backend in this code
+from ClientBackEnd import *  # importing client backend so we can call functions from the backend in this code
 
 # color pallete
 # ededed
@@ -19,9 +19,8 @@ customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
-root.geometry("800x400")
+root.geometry("800x300")
 root.title('ESA Blender Render Farm')
-
 
 def handle_error():
     messagebox.showerror('Error', 'Unable to connect to server, please close program and re-open')
@@ -69,9 +68,8 @@ def inputErrorMessage(errorType):
     elif errorType == 2:  # indicates invalid frames string
         messagebox.showerror('Error', 'butt inspection will begin immediately')
 
-def submission():
-    if (
-            entry1.get() and entry2.get() and frameEntry.get()) == "":  # this statement checks that all the textfields are filled out, if one is missing execute if statement
+def submission(client):
+    if (entry1.get() and entry2.get() and frameEntry.get()) == "":  # this statement checks that all the textfields are filled out, if one is missing execute if statement
         print('please make sure you fill all the file requirements')  # prints if a textfield is missing an input
         inputErrorMessage(1)  # error 1 would indicate that the file paths are not correctly set
     elif frameChecker(
@@ -79,10 +77,11 @@ def submission():
         print('please ensure the proper format for your frame entry')
         inputErrorMessage(2)
     elif start_frame > end_frame:
-        print('this isnt done right man')
+        print('invalid parameters for frame range')
         inputErrorMessage(3)
     else:  # this would be the block we execute if we pass all the previous conditions
-        print('place holder where we will execute the data transmission segment')
+        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client) # passes through the blender file location, output folder, start, and end frame
+
 
 
 #    print(entry1.get())
@@ -116,9 +115,6 @@ entry2.grid(row=2, column=1, pady=7)
 outputFilePath = customtkinter.CTkButton(master=frame, text="Output Path", command=printThing)
 outputFilePath.grid(row=2, column=2, pady=7)
 
-# checkbox = customtkinter.CTkCheckBox(master=frame, text="Remember Me")
-# checkbox.grid(row=3,column=2,pady=7,padx=7)
-
 framesLabel = customtkinter.CTkLabel(master=frame, text='Frames needing rendered (inclusive)',
                                      font=("Times New Roman", 20))
 framesLabel.grid(row=3, column=0, pady=7, padx=7)
@@ -129,7 +125,7 @@ frameEntry.grid(row=3, column=1, pady=7, padx=7)
 submitButton = customtkinter.CTkButton(master=frame, text='Submit', command=submission)
 submitButton.grid(row=4, column=1, pady=7, padx=5)
 
-connectionFunction(error_callback=handle_error)  # attempts to connect to the server
+connectionFunction(error_callback=handle_error)  # attempts to connect to the server, execute 'handle_error' function if connection fails
 
 file = customtkinter.CTk
 
