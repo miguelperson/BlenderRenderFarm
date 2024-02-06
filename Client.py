@@ -33,3 +33,17 @@ def senderFunction(blenderFile, outputPath, startFrame, endFrame, client):
     data = file.read()
     client.sendall(data) # this is going to send the blender file to the server after giving it the initial
     client.send(b"<END>") # sending an end tag so the server knows when to stop listening
+
+    # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
+
+    zipFileName = client.recv(1028).decode()
+    zipFileSize = int(client.recv(1024).decode())
+
+    recievedData = b""
+    while len(recievedData) < zipFileSize # loop continues while the recievedData variable is smaller than the actual data recieved
+        chunk = client.recv(1024)
+        if not chunk:
+            break
+        recievedData += chunk #concatenates the chunk data to the end of recieved data, essentially putting the data we recieve at the end
+    with open(zipFileName, 'wb') as f: # save zip file
+        f.write(recievedData)
