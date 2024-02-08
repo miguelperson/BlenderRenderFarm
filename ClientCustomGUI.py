@@ -3,8 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import ctypes as ct
 import customtkinter
-from ClientBackEnd import senderFunction, recieverFunction
-from ClientBackEnd import connectionFunction# importing client backend so we can call functions from the backend in this code
+from Client import senderFunction, recieverFunction, connectionFunction# importing client backend so we can call functions from the backend in this code
 
 # color pallete
 # ededed
