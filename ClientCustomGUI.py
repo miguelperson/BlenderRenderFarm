@@ -3,7 +3,8 @@ from tkinter import filedialog
 from tkinter import messagebox
 import ctypes as ct
 import customtkinter
-from ClientBackEnd import *  # importing client backend so we can call functions from the backend in this code
+from ClientBackEnd import senderFunction, recieverFunction
+from ClientBackEnd import connectionFunction# importing client backend so we can call functions from the backend in this code
 
 # color pallete
 # ededed
@@ -14,6 +15,7 @@ path_output = ""
 render_output = ""
 start_frame = 0
 end_frame = 0
+client = None
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -68,12 +70,12 @@ def inputErrorMessage(errorType):
     elif errorType == 2:  # indicates invalid frames string
         messagebox.showerror('Error', 'butt inspection will begin immediately')
 
-def submission(client):
+def submission():
+    global client
     if (entry1.get() and entry2.get() and frameEntry.get()) == "":  # this statement checks that all the textfields are filled out, if one is missing execute if statement
         print('please make sure you fill all the file requirements')  # prints if a textfield is missing an input
         inputErrorMessage(1)  # error 1 would indicate that the file paths are not correctly set
-    elif frameChecker(
-            frameEntry.get()) == False:  # after first if check that the frame number entry thing is a valid input
+    elif frameChecker(frameEntry.get()) == False:  # after first if check that the frame number entry thing is a valid input
         print('please ensure the proper format for your frame entry')
         inputErrorMessage(2)
     elif start_frame > end_frame:
@@ -81,6 +83,7 @@ def submission(client):
         inputErrorMessage(3)
     else:  # this would be the block we execute if we pass all the previous conditions
         senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client) # passes through the blender file location, output folder, start, and end frame
+        recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
 
 
@@ -125,7 +128,7 @@ frameEntry.grid(row=3, column=1, pady=7, padx=7)
 submitButton = customtkinter.CTkButton(master=frame, text='Submit', command=submission)
 submitButton.grid(row=4, column=1, pady=7, padx=5)
 
-connectionFunction(error_callback=handle_error)  # attempts to connect to the server, execute 'handle_error' function if connection fails
+client = connectionFunction(error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
 
 file = customtkinter.CTk
 
