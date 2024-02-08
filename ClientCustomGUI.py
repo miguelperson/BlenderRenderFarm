@@ -3,6 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import ctypes as ct
 import customtkinter
+import os
 from Client import senderFunction, recieverFunction, connectionFunction# importing client backend so we can call functions from the backend in this code
 
 # color pallete
@@ -15,7 +16,7 @@ render_output = ""
 start_frame = 0
 end_frame = 0
 client = None
-
+username = ""
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
@@ -81,16 +82,29 @@ def submission():
         print('invalid parameters for frame range')
         inputErrorMessage(3)
     else:  # this would be the block we execute if we pass all the previous conditions
-        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client) # passes through the blender file location, output folder, start, and end frame
+        #getting the username
+        file_path = entry1.get()
+        path_components = file_path.split("/")
+        try:
+            users_index = path_components.index("Users")
+        except ValueError:
+            print("Error: 'Users' directory not found in the file path.")
+            exit()
+        if users_index + 1 < len(path_components):
+            username = path_components[users_index + 1]
+        else:
+            print("Error: Unable to extract username from the file path.")
+
+        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start, and end frame
         recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
 
-
-#    print(entry1.get())
-#    print(entry2.get())
-#    print(frameEntry.get())
-#    print(start_frame)
-#    print(end_frame)
+    print(entry1.get())
+    print(entry2.get())
+    print(frameEntry.get())
+    print(start_frame)
+    print(end_frame)
+    print(username)
 
 frame = customtkinter.CTkFrame(master=root)
 

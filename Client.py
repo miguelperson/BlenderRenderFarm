@@ -24,7 +24,7 @@ def connectionFunction(error_callback=None):
         if error_callback:
             error_callback()
         return  # Exit the function or handle the error as needed
-def senderFunction(blenderFile, outputPath, startFrame, endFrame, client):
+def senderFunction(blenderFile, outputPath, startFrame, endFrame, client, username):
     file = open(blenderFile,"rb")
     file_size = os.path.getsize(blenderFile) # how many bytes the blender file has
     randomTail = random.randrange(1,99999,1)
