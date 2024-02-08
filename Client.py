@@ -18,6 +18,7 @@ def connectionFunction(error_callback=None):
         client.connect(ADDR)  # this connects to the server
         client_IP = socket.gethostbyname(socket.gethostname())
         print(f"Connected to {SERVER} on {PORT}")
+        return client
     except socket.error as e:
         print(f"Error connecting to {SERVER} on {PORT}: {e}")
         if error_callback:
@@ -40,10 +41,16 @@ def senderFunction(blenderFile, outputPath, startFrame, endFrame, client):
     zipFileSize = int(client.recv(1024).decode())
 
     recievedData = b""
-    while len(recievedData) < zipFileSize # loop continues while the recievedData variable is smaller than the actual data recieved
+    while len(recievedData) < zipFileSize: # loop continues while the recievedData variable is smaller than the actual data recieved
         chunk = client.recv(1024)
         if not chunk:
             break
         recievedData += chunk #concatenates the chunk data to the end of recieved data, essentially putting the data we recieve at the end
     with open(zipFileName, 'wb') as f: # save zip file
         f.write(recievedData)
+
+def recieverFunction(client, outputFolder):
+    zipFileName = client.recv(1028).decode() # recieves file name
+    zipFileSize = int(client.recv(1024)).decode() # recieves the file size from the server
+
+    recievedData = b"" # will store byte stream of the recieved data from the server
