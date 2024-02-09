@@ -6,11 +6,6 @@ import customtkinter
 import os
 from Client import senderFunction, recieverFunction, connectionFunction# importing client backend so we can call functions from the backend in this code
 
-# color pallete
-# ededed
-# 666666
-# ffffff
-# 2e2e2e
 path_output = ""
 render_output = ""
 start_frame = 0
