@@ -33,24 +33,18 @@ def senderFunction(blenderFile, outputPath, startFrame, endFrame, client, userna
     client.send(f"{startFrame},{endFrame}".encode()) # start and end frame are concatenated into a string
     data = file.read()
     client.sendall(data) # this is going to send the blender file to the server after giving it the initial
-    client.send(b"<END>") # sending an end tag so the server knows when to stop listening
+    client.send(b"<END>") # sending an end tag so the server knows when to stop 
 
-    # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
+# following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
+def recieverFunction(client, outputFolder):
+    zipFileName = client.recv(1028).decode() # recieves file name
+    zipFileSize = int(client.recv(1024)).decode() # recieves the file size from the server
 
-    zipFileName = client.recv(1028).decode()
-    zipFileSize = int(client.recv(1024).decode())
-
-    recievedData = b""
-    while len(recievedData) < zipFileSize: # loop continues while the recievedData variable is smaller than the actual data recieved
+    recievedData = b"" # will store byte stream of the recieved data from the server
+    while len(recievedData) < zipFileSize: # loop continues while the recievedData vairable is smaller than actual data recieved 
         chunk = client.recv(1024)
         if not chunk:
             break
         recievedData += chunk #concatenates the chunk data to the end of recieved data, essentially putting the data we recieve at the end
     with open(zipFileName, 'wb') as f: # save zip file
         f.write(recievedData)
-
-def recieverFunction(client, outputFolder):
-    zipFileName = client.recv(1028).decode() # recieves file name
-    zipFileSize = int(client.recv(1024)).decode() # recieves the file size from the server
-
-    recievedData = b"" # will store byte stream of the recieved data from the server
