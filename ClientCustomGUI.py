@@ -78,7 +78,8 @@ def submission():
         inputErrorMessage(3)
     else:  # this would be the block we execute if we pass all the previous conditions
         #getting the username
-        file_path = entry1.get()
+        file_path = entry1.get() ## ============================ going to want to add exception handling becuase if a user presses the submission button with nothing in the entry fields
+        # an exception happens as theres nothing instantiated there, would probably be best to include the file_path getter inside the try catch block
         path_components = file_path.split("/")
         try:
             users_index = path_components.index("Users")
