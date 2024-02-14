@@ -94,7 +94,6 @@ def submission():
         senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start, and end frame
         recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
-
     print(entry1.get())
     print(entry2.get())
     print(frameEntry.get())
@@ -102,11 +101,46 @@ def submission():
     print(end_frame)
     print(username)
 
+#User Settings Window
+#---------------------------------------------------------------------------------------------------------------------------------------------
+def userSettings():
+    customtkinter.set_appearance_mode("dark")
+    customtkinter.set_default_color_theme("dark-blue") 
+
+    newWindow = tk.Toplevel(root)
+    newWindow.title("User Settings")
+    newWindow.configure(bg="black")
+
+    # Set appearance mode and default color theme for the new window
+    customtkinter.set_appearance_mode("dark")  # Set to dark mode
+    customtkinter.set_default_color_theme("dark-blue")  # Set the color theme to dark blue
+
+    usernameLabel = customtkinter.CTkLabel(newWindow, text="Username: ")
+    usernameLabel.grid(row=0, column=0, pady=7, padx=5)
+
+    ipLabel = customtkinter.CTkLabel(newWindow, text="IP address: ")
+    ipLabel.grid(row=1, column=0, pady=7, padx=5)
+
+    userEntry = customtkinter.CTkEntry(newWindow, placeholder_text="ex. Sherlock Holmes", width=200)
+    userEntry.grid(row=0, column=1, pady=7, padx=5)
+
+    ipEntry = customtkinter.CTkEntry(newWindow, placeholder_text="ex. 192.158.1.38", width=200)
+    ipEntry.grid(row=1, column=1, pady=7, padx=5)
+
+    addButton = customtkinter.CTkButton(newWindow, text="Add User")
+    addButton.grid(row=3, column=0, pady=7, padx=5)
+
+    replaceButton = customtkinter.CTkButton(newWindow, text="Update User Info")
+    replaceButton.grid(row=3, column=1, pady=7, padx=5)
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
+    
 frame = customtkinter.CTkFrame(master=root)
 
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
-label = customtkinter.CTkLabel(master=frame, text='ESA Distributed Rendering', font=("Times New Roman", 22))  # header
+label = customtkinter.CTkLabel(master=frame, text='ESA Distributed Rendering', font=("Times New Roman", 22))  
 label.grid(row=0, column=0, pady=7, padx=5)
 
 blenderFilePath = customtkinter.CTkLabel(master=frame, text='Blend File Path', font=("Times New Roman", 20))
@@ -127,8 +161,7 @@ entry2.grid(row=2, column=1, pady=7)
 outputFilePath = customtkinter.CTkButton(master=frame, text="Output Path", command=printThing)
 outputFilePath.grid(row=2, column=2, pady=7)
 
-framesLabel = customtkinter.CTkLabel(master=frame, text='Frames needing rendered (inclusive)',
-                                     font=("Times New Roman", 20))
+framesLabel = customtkinter.CTkLabel(master=frame, text='Frames needing rendered (inclusive)', font=("Times New Roman", 20))
 framesLabel.grid(row=3, column=0, pady=7, padx=7)
 
 frameEntry = customtkinter.CTkEntry(master=frame, placeholder_text='###-### <- input format', width=200)
@@ -136,6 +169,9 @@ frameEntry.grid(row=3, column=1, pady=7, padx=7)
 
 submitButton = customtkinter.CTkButton(master=frame, text='Submit', command=submission)
 submitButton.grid(row=4, column=1, pady=7, padx=5)
+
+editUserButton = customtkinter.CTkButton(master=frame, text='User Settings', command=userSettings)
+editUserButton.grid(row=5, column=0, pady=7, padx=5)
 
 client = connectionFunction(error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
 
