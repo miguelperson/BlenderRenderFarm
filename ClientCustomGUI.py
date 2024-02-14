@@ -5,6 +5,7 @@ import ctypes as ct
 import customtkinter
 import os
 from Client import senderFunction, recieverFunction, connectionFunction# importing client backend so we can call functions from the backend in this code
+#---------------------------------------------------------------------------------------------------------------------------------------------
 
 path_output = ""
 render_output = ""
@@ -18,6 +19,7 @@ customtkinter.set_default_color_theme("dark-blue")
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
 root.geometry("800x300")
 root.title('ESA Blender Render Farm')
+#---------------------------------------------------------------------------------------------------------------------------------------------
 
 def handle_error():
     messagebox.showerror('Error', 'Unable to connect to server, please close program and re-open')
@@ -80,6 +82,7 @@ def submission():
         #getting the username
         file_path = entry1.get() ## ============================ going to want to add exception handling becuase if a user presses the submission button with nothing in the entry fields
         # an exception happens as theres nothing instantiated there, would probably be best to include the file_path getter inside the try catch block
+        #getting the username from the path
         path_components = file_path.split("/")
         try:
             users_index = path_components.index("Users")
@@ -105,7 +108,7 @@ def submission():
 #---------------------------------------------------------------------------------------------------------------------------------------------
 def userSettings():
     customtkinter.set_appearance_mode("dark")
-    customtkinter.set_default_color_theme("dark-blue") 
+    customtkinter.set_default_color_theme("dark-blue")
 
     newWindow = tk.Toplevel(root)
     newWindow.title("User Settings")
@@ -135,15 +138,17 @@ def userSettings():
 
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
-    
+
+#Main window GUI fragments
+#---------------------------------------------------------------------------------------------------------------------------------------------
 frame = customtkinter.CTkFrame(master=root)
 
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
-label = customtkinter.CTkLabel(master=frame, text='ESA Distributed Rendering', font=("Times New Roman", 22))  
+label = customtkinter.CTkLabel(master=frame, text="ESA Distributed Rendering", font=("Times New Roman", 22))  
 label.grid(row=0, column=0, pady=7, padx=5)
 
-blenderFilePath = customtkinter.CTkLabel(master=frame, text='Blend File Path', font=("Times New Roman", 20))
+blenderFilePath = customtkinter.CTkLabel(master=frame, text="Blend File Path", font=("Times New Roman", 20))
 blenderFilePath.grid(row=1, column=0, pady=7, padx=5)
 
 entry1 = customtkinter.CTkEntry(master=frame, placeholder_text="Blend file path", width=200)
@@ -152,7 +157,7 @@ entry1.grid(row=1, column=1, pady=7, padx=5)
 button = customtkinter.CTkButton(master=frame, text="Blender File Path", command=filePath)
 button.grid(row=1, column=2, pady=7, padx=5)
 
-outputFolder = customtkinter.CTkLabel(master=frame, text='Output Folder', font=("Times New Roman", 20))
+outputFolder = customtkinter.CTkLabel(master=frame, text="Output Folder", font=("Times New Roman", 20))
 outputFolder.grid(row=2, column=0, pady=7, padx=5)
 
 entry2 = customtkinter.CTkEntry(master=frame, placeholder_text="Output File Path", width=200)
@@ -172,6 +177,7 @@ submitButton.grid(row=4, column=1, pady=7, padx=5)
 
 editUserButton = customtkinter.CTkButton(master=frame, text='User Settings', command=userSettings)
 editUserButton.grid(row=5, column=0, pady=7, padx=5)
+#---------------------------------------------------------------------------------------------------------------------------------------------
 
 client = connectionFunction(error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
 
