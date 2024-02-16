@@ -24,7 +24,7 @@ mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID
 """
 
 """
-mycursor.execute("SHOW TABLES")
+mycursor.execute("SHOW TABLES")s
 
 for x in mycursor:
   print(x)
