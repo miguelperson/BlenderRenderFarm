@@ -3,7 +3,7 @@ import socket
 import os
 from sqlite3 import connect # imports os handling library
 import threading
-import tqdm
+
 from manipulateDB import *
 
 # server side implementation of socket 
@@ -13,7 +13,7 @@ ADDR = (SERVER,port)
 HEADER = 1024 # will be the header for the data we want to send
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SAVE_PATH = "C:\Users\Miguel Baca\Pictures\BlenderRenderFiles"
+SAVE_PATH = r"C:\Users\Miguel Baca\Pictures\BlenderRenderFiles"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
 server.bind(ADDR)
@@ -32,7 +32,7 @@ def handle_client(conn, addr): # handles communication between client and server
         print(file_size) # prints file size to the console 
         file = open(file_name, "wb") # kinda creating a file with the name file_name, oging to concatenate bytes to it now
         file_bytes = b""
-        progress = tdqm.tdqm(unit="B", unit_scale=True, unit_divisor=1000, total=int(file_size)) # creating progress bar
+
         done = False
         while not done:
             data = conn.recv(1024) # transmits data in chunks to make it more efficient

@@ -33,6 +33,7 @@ def senderFunction(blenderFile, outputPath, startFrame, endFrame, client, userna
     client.send(f"{startFrame},{endFrame}".encode()) # start and end frame are concatenated into a string
     data = file.read()
     client.sendall(data) # this is going to send the blender file to the server after giving it the initial
+    client.send(b"<END>") # end tag is so the server knows when the end of the file is
 
 
 # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
