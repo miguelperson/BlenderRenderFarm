@@ -40,9 +40,9 @@ def handle_client(conn, addr): # handles communication between client and server
                 done = True
             else:
                 file_bytes += data
-            progress.update(1024) # updates the progress bar
-        file.write(file_bytes) # writes the file bytes to the file variable    
-        # add line to execute sql command to insert into project table || insert_into_project(project_name, client, frames_total, start_frame, end_frame)
+        file.write(file_bytes) # writes the file bytes to the file variable
+        
+        insert_into_project(file_name, client, frames_total, start_frame, end_frame)
         frames_total = 1 + (end_frame-start_frame) # gives us total frame value
         insert_into_project(file_name,addr,frames_total, start_frame, end_frame)
     conn.close() # closes the connection
