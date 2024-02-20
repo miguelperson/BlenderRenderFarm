@@ -42,7 +42,7 @@ def handle_client(conn, addr): # handles communication between client and server
                 file_bytes += data
         file.write(file_bytes) # writes the file bytes to the file variable
         
-        insert_into_project(file_name, client, frames_total, start_frame, end_frame)
+        #insert_into_project(file_name, client, frames_total, start_frame, end_frame)
         frames_total = 1 + (end_frame-start_frame) # gives us total frame value
         insert_into_project(file_name,addr,frames_total, start_frame, end_frame)
     conn.close() # closes the connection
