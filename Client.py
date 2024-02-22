@@ -49,3 +49,6 @@ def recieverFunction(client, outputFolder):
         recievedData += chunk #concatenates the chunk data to the end of recieved data, essentially putting the data we recieve at the end
     with open(zipFileName, 'wb') as f: # save zip file
         f.write(recievedData)
+        
+def disconnectMessage(client):
+    client.send('!DISCONNECT')

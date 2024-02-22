@@ -137,6 +137,9 @@ def userSettings():
     replaceButton.grid(row=3, column=1, pady=7, padx=5)
 
 
+def disconnectHandling():
+    disconnectMessage(client)    
+
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
 #Main window GUI fragments
