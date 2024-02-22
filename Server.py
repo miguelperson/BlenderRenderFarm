@@ -53,7 +53,16 @@ def handle_client(conn, addr): # handles communication between client and server
         
         #insert_into_project(file_name, client, frames_total, start_frame, end_frame)
         frames_total = 1 + (end_frame-start_frame) # gives us total frame value
-        insert_into_project(file_name,addr,frames_total, start_frame, end_frame)
+        #insert_into_project(file_name,addr,frames_total, start_frame, end_frame
+
+        # Blender rendering command
+        blender_command = [
+            "blender", "-b", file_path, 
+            "-o", os.path.join(SAVE_PATH, "frame_#####"), 
+            "-s", str(start_frame), "-e", str(end_frame), "-a"
+        ]
+        subprocess.run(blender_command)
+        
     conn.close() # closes the connection
         
 
