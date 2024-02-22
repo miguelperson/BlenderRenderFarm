@@ -30,7 +30,7 @@ def handle_client(conn, addr): # handles communication between client and server
             connected = False
             break
         # Receive file size
-        file_size = conn.recv(1024).decode()
+        file_size = int(conn.recv(1024).decode())
 
         # Receive start and end frames
         frames_info = conn.recv(1024).decode()
@@ -47,8 +47,8 @@ def handle_client(conn, addr): # handles communication between client and server
                 file.write(data)
                 remaining -= len(data)
 
-        # Check for end tag to ensure file transfer completion
-        if conn.recv(1024) == b"<END>":
+
+        if conn.recv(1024) == b"<END>": # checks for end tag indicating completion of file transfer
             print(f"File {file_name} received successfully.")
         file.write(file_bytes) # writes the file bytes to the file variable
         
@@ -62,9 +62,9 @@ def handle_client(conn, addr): # handles communication between client and server
             "-o", os.path.join(SAVE_PATH, "frame_#####"), 
             "-s", str(start_frame), "-e", str(end_frame), "-a"
         ]
-        subprocess.run(blender_command)
+        subprocess.run(blender_command) # essentialy creates a sort of bat file that is run
         
-    conn.close() # closes the connection
+    conn.close() # closes the connection when !DISCONNECT message is sent
         
 
 def start(): # code for server to start handling connections

@@ -19,6 +19,7 @@ customtkinter.set_default_color_theme("dark-blue")
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
 root.geometry("800x300")
 root.title('ESA Blender Render Farm')
+
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
 def handle_error():
