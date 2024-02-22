@@ -34,7 +34,7 @@ def handle_client(conn, addr): # handles communication between client and server
         #file_size = int(file_size_bytes)
 
         # Receive start and end frames
-        frames_info = conn.recv(1024).decode()
+        frames_info = conn.recv(1024).decode(FORMAT)
         start_frame, end_frame = map(int, frames_info.split(',')) # assigns the start and end frame values to theircorresponding variables
 
         # File reception and saving
