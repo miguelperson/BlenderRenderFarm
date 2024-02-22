@@ -40,13 +40,14 @@ def handle_client(conn, addr): # handles communication between client and server
         # File reception and saving
         file_path = os.path.join(SAVE_PATH, file_name)
         with open(file_path, "wb") as file:
-            remaining = int(file_size)
-            while remaining:
-                chunk_size = min(remaining, 1024)
-                data = conn.recv(chunk_size)
-                if not data: break
-                file.write(data)
-                remaining -= len(data)
+            file_data = b""
+            while True:
+                data = conn.recv(1024)
+                if not data or b"<END>" in data:
+                    file_data += data
+                    break
+                file_data += data
+            file.write(file_data.replace(b"<END>", b""))  # Remove the <END> tag
 
 
         if conn.recv(1024) == b"<END>": # checks for end tag indicating completion of file transfer
