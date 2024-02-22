@@ -4,7 +4,7 @@ from tkinter import messagebox
 import ctypes as ct
 import customtkinter
 import os
-from Client import senderFunction, recieverFunction, connectionFunction# importing client backend so we can call functions from the backend in this code
+from Client import senderFunction, recieverFunction, connectionFunction, disconnectMessage# importing client backend so we can call functions from the backend in this code
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
 path_output = ""
@@ -138,7 +138,7 @@ def userSettings():
 
 
 def disconnectHandling():
-    disconnectMessage(client)    
+    disconnectMessage(client) # calls disconnectMessage function from client backend to send '!DISCONNECT' to server
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -181,8 +181,8 @@ submitButton.grid(row=4, column=1, pady=7, padx=5)
 editUserButton = customtkinter.CTkButton(master=frame, text='User Settings', command=userSettings)
 editUserButton.grid(row=5, column=0, pady=7, padx=5)
 
-submitButton = customtkinter.CTkButton(master=frame, text='Disconnect', command=userSettings)
-submitButton.grid(row=5, column=2, pady=7, padx=5)
+disconnectButton = customtkinter.CTkButton(master=frame, text='Disconnect', command=disconnectHandling)
+disconnectButton.grid(row=5, column=2, pady=7, padx=5)
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
 client = connectionFunction(error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
