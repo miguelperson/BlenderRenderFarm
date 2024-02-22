@@ -32,7 +32,7 @@ def senderFunction(blenderFile, outputPath, startFrame, endFrame, client, userna
     randomTail = random.randrange(1,99999,1)
     
     client.send(f"blendRender{randomTail}.blend".encode()) # will send file name with executable so the server knows its a blender file
-    client.send(str(file_size).encode(FORMAT)) # typecasting the filesize variable as a string then encoding to send to server
+    client.send(str(file_size).encode()) # typecasting the filesize variable as a string then encoding to send to server
     client.send(f"{startFrame},{endFrame}".encode()) # start and end frame are concatenated into a string
     
     data = file.read()
