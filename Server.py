@@ -13,7 +13,7 @@ ADDR = (SERVER,port)
 HEADER = 1024 # will be the header for the data we want to send
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SAVE_PATH = r"C:\Users\Miguel Baca\Pictures\BlenderRenderFiles"
+SAVE_PATH = r"C:\Users\Miguel2\Downloads"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
 server.bind(ADDR)
@@ -33,7 +33,7 @@ def handle_client(conn, addr): # handles communication between client and server
 
         # Receive start and end frames
         frames_info = conn.recv(1024).decode()
-        start_frame, end_frame = map(int, frames_info.split(','))
+        start_frame, end_frame = map(int, frames_info.split(',')) # assigns the start and end frame values to theircorresponding variables
 
         # File reception and saving
         file_path = os.path.join(SAVE_PATH, file_name)
