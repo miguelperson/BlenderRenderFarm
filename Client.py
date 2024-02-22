@@ -51,4 +51,4 @@ def recieverFunction(client, outputFolder):
         f.write(recievedData)
         
 def disconnectMessage(client):
-    client.send('!DISCONNECT')
+    client.send('!DISCONNECT'.encode())
