@@ -28,19 +28,27 @@ def handle_client(conn, addr): # handles communication between client and server
             print(f"[DISCONNECTED] {addr} disconnnected from the server")
             connected = False
             break
-        print(file_name) # just pringing the name to console
+        # Receive file size
         file_size = conn.recv(1024).decode()
-        print(file_size) # prints file size to the console 
-        file = open(file_name, "wb") # kinda creating a file with the name file_name, oging to concatenate bytes to it now
-        file_bytes = b""
 
-        done = False
-        while not done:
-            data = conn.recv(1024) # transmits data in chunks to make it more efficient
-            if file_bytes[-5:] == b"<END>":
-                done = True
-            else:
-                file_bytes += data
+        # Receive start and end frames
+        frames_info = conn.recv(1024).decode()
+        start_frame, end_frame = map(int, frames_info.split(','))
+
+        # File reception and saving
+        file_path = os.path.join(SAVE_PATH, file_name)
+        with open(file_path, "wb") as file:
+            remaining = int(file_size)
+            while remaining:
+                chunk_size = min(remaining, 1024)
+                data = conn.recv(chunk_size)
+                if not data: break
+                file.write(data)
+                remaining -= len(data)
+
+        # Check for end tag to ensure file transfer completion
+        if conn.recv(1024) == b"<END>":
+            print(f"File {file_name} received successfully.")
         file.write(file_bytes) # writes the file bytes to the file variable
         
         #insert_into_project(file_name, client, frames_total, start_frame, end_frame)
