@@ -9,7 +9,7 @@ def connectionFunction(error_callback=None):
     PORT = 5050
     FORMAT = 'utf-8'
     DISCONNECT_MESSAGE = "!DISCONNECT"
-    SERVER = "192.168.99.139"  # Update with the actual server IP
+    SERVER = "192.168.99.98"  # Update with the actual server IP
     ADDR = (SERVER, PORT)
     counter = 0  # will be used to keep track of the files sent
 
