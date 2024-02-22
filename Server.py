@@ -30,7 +30,8 @@ def handle_client(conn, addr): # handles communication between client and server
             connected = False
             break
         # Receive file size
-        file_size = conn.recv(1024).decode('utf-8')
+        file_size_bytes = conn.recv(1024)
+        file_size = int(file_size_bytes)
 
         # Receive start and end frames
         frames_info = conn.recv(1024).decode()
