@@ -25,6 +25,7 @@ def handle_client(conn, addr): # handles communication between client and server
     while connected: # waiting to recieve information from client, connection will remain constant until disconnect message sent
         file_name = conn.recv(HEADER).decode() # the .recv() is a blocking code, will also recieve the file name first
         if file_name == DISCONNECT_MESSAGE:
+            print(f"[DISCONNECTED] {addr} disconnnected from the server")
             connected = False
             break
         print(file_name) # just pringing the name to console
