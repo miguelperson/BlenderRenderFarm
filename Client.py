@@ -4,6 +4,8 @@ import os
 import customtkinter
 import socket
 
+FORMAT = 'utf-8'
+
 def connectionFunction(error_callback=None):
     HEADER = 64
     PORT = 5050
