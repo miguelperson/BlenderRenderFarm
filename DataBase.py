@@ -22,7 +22,7 @@ mycursor.execute("CREATE TABLE workers (worker VARCHAR(100), available TINYINT(1
 mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
 #----------------------------------------------------------------------------------
 """
-
+#dfghjk
 """
 mycursor.execute("SHOW TABLES")s
 
