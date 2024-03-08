@@ -42,17 +42,19 @@ mysql
 """
 #Hello everybody my name is Markiplier
 """
+#show all the tables in the renderdb database
 mycursor.execute("SHOW TABLES")
-
 for x in mycursor:
   print(x)
 
+#describe the columns of the table (change the name to the table you want to DESCRIBE)
 mycursor.execute("DESCRIBE performance")
 result = mycursor.fetchall()
 for row in result:
     print(row)
 """
 """
+#Show the contents of the table (change the name of the to the table you want the data FROM)
 mycursor.execute("SELECT * FROM project")
 
 # Fetch all rows from the cursor
