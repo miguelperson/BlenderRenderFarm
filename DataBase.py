@@ -5,11 +5,15 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="7323",
-    database="renderdb" #comment when reate database and uncomment after
+    #database="renderdb" #comment when reate database and uncomment after
 )
 
 # Create a cursor object
 mycursor = mydb.cursor()
+mycursor.execute("CREATE DATABASE renderdb")
+"""
+mycursor.execute ("DROP DATABASE renderdb")
+"""
 """
 #----------------------------------------------------------------------------------1
 #Create Database renderdb
@@ -35,7 +39,7 @@ for row in result:
     print(row)
 
 """
-
+"""
 mycursor.execute("SELECT * FROM project")
 
 # Fetch all rows from the cursor
@@ -48,3 +52,4 @@ for row in result:
 
 mydb.commit()
 mydb.close()
+"""
