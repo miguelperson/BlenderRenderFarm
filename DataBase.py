@@ -10,7 +10,6 @@ mydb = mysql.connector.connect(
 
 # Create a cursor object
 mycursor = mydb.cursor()
-mycursor.execute("CREATE DATABASE renderdb")
 """
 mycursor.execute ("DROP DATABASE renderdb")
 """
