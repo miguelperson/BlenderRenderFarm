@@ -76,7 +76,7 @@ def start(): # code for server to start handling connections
         conn, addr = server.accept() # code blocks and waits on .accept part of code until new connection occurs and then stores address and then store object allowing to send information back to connection
         thread = threading.Thread(target=handle_client, args=(conn,addr))
         thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}") # will tell us all the active client connections
+        print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # will tell us all the active client connections
 #        if keyboard.keyboard.is_pressed('u'):
 #            print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}")
             
