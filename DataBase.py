@@ -20,16 +20,10 @@ mycursor.execute ("DROP DATABASE renderdb")
 mycursor.execute("CREATE DATABASE renderdb")
 
 #----------------------------------------------------------------------------------2
-#Create Teables
-mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, project_name VARCHAR(255), client VARCHAR(100), frames_total smallint UNSIGNED, start_frame smallint UNSIGNED, end_frame smallint UNSIGNED)")
-mycursor.execute("CREATE TABLE workers (worker VARCHAR(100), available TINYINT(1), projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))") #TINYINT(1)=true
-mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
 
 mysql
 # Create Tables - Mikaela :) :)
 """
-
-
 
 #mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255), project_name VARCHAR(255), ames_total smallint UNSIGNED, start_frame smallint UNSIGNED, end_frame smallint UNSIGNED, completed ENUM('1', '2', '3'))") 
 #mycursor.execute("CREATE TABLE workers (workerIP VARCHAR(15), available TINYINT(1), current_project INT, FOREIGN KEY (current_project) REFERENCES project(projectID))")

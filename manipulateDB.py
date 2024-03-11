@@ -22,15 +22,15 @@ def sql_exe(sql,val):
         print("Error:", err)
 
 #Insert new row
-def insert_into_project(project_name, client, frames_total, start_frame, end_frame):
-    sql = "INSERT INTO project (project_name, client, frames_total, start_frame, end_frame) VALUES (%s, %s, %s, %s, %s)"
-    val = (project_name, client, frames_total, start_frame, end_frame)
+def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
+    sql = "INSERT INTO project (projectID, client, project_name, ames_total, start_frame, end_frame, completed) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val = (projectID, client, project_name, ames_total, start_frame, end_frame, completed)
     sql_exe(sql,val)
     
         
-def insert_into_workers(worker, available, projectID):
-    sql = "INSERT INTO workers (worker, available, projectID) VALUES (%s, %s, %s)"
-    val = (worker, available, projectID)
+def insert_into_workers(workerIP, available, current_project):
+    sql = "INSERT INTO workers (workerIP, available, current_project) VALUES (%s, %s, %s)"
+    val = (workerIP, available, current_project)
     sql_exe(sql,val)
 
 def insert_into_render(frame_number, projectID):
@@ -38,6 +38,11 @@ def insert_into_render(frame_number, projectID):
     val = (frame_number, projectID)
     sql_exe(sql,val)
         
+def insert_into_performance(projectID, workerID, frames_total, time_total, start_time, end_time, worker1_avg_time, worker2_avg_time):
+    sql = "INSERT INTO workers (projectID, workerID, frames_total, time_total, start_time, end_time, worker1_avg_time, worker2_avg_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (projectID, workerID, frames_total, time_total, start_time, end_time, worker1_avg_time, worker2_avg_time)
+    sql_exe(sql,val)
+
 #Delete the row
 def remove_from_project(projectID,):
     sql = "DELETE FROM project WHERE projectID = %s"
@@ -51,6 +56,11 @@ def remove_from_workers(projectID):
 
 def remove_from_render(projectID,):
     sql = "DELETE FROM project WHERE projectID = %s"
+    val = (projectID,)  
+    sql_exe(sql,val)
+
+def remove_from_performance(projectID,):
+    sql = "DELETE FROM performance WHERE projectID = %s"
     val = (projectID,)  
     sql_exe(sql,val)
 
