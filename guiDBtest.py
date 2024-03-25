@@ -26,7 +26,7 @@ def refreshTable():
 #gui
 root = Tk()
 root.title("Render Performance")
-root.geometry("1080x720")
+root.geometry("1500x720")
 my_tree = ttk.Treeview(root)
 
 #functions later
@@ -39,6 +39,12 @@ def read():
     conn.close()
     return results
 
+def add():
+    studid=str(studidEntry.get())
+    fname=str(fnameEntry.get)
+    lname=str(addressEntry.get())
+    address=str(addressEntry.get())
+    phone=str(phoneEntry.get())
 
 #gui
 label=Label(root, text="Render Performance", font=('Arial Bold', 30))
@@ -98,20 +104,27 @@ selectBth.grid(row=13,column=5,columnspan=1,rowspan=2)
 
 style=ttk.Style()
 style.configure("Treeview.Heading",font=('Arial Bold',15))
-my_tree['columns']=("Stud ID","First Name","Last Name","Address","Phone")
+my_tree['columns'] = ("projectID", "workerID", "frames_total", "time_total", "start_time", "end_time", "worker1_avg_time", "worker2_avg_time")
+
 
 my_tree.column("#0", width=0,stretch=NO)
-my_tree.column("Stud ID", anchor=W,width=170)
-my_tree.column("First Name", anchor=W,width=150)
-my_tree.column("Last Name", anchor=W,width=150)
-my_tree.column("Address", anchor=W,width=165)
-my_tree.column("Phone", anchor=W,width=150)
+my_tree.column("projectID", anchor=W,width=150)
+my_tree.column("workerID", anchor=W,width=150)
+my_tree.column("frames_total", anchor=W,width=150)
+my_tree.column("time_total", anchor=W,width=165)
+my_tree.column("start_time", anchor=W,width=150)
+my_tree.column("end_time", anchor=W,width=150)
+my_tree.column("worker1_avg_time", anchor=W,width=150)
+my_tree.column("worker2_avg_time", anchor=W,width=150)
 
-my_tree.heading("Stud ID",text="Student ID",anchor=W)
-my_tree.heading("First Name",text="First Name",anchor=W)
-my_tree.heading("Last Name",text="Last Name",anchor=W)
-my_tree.heading("Address",text="Address",anchor=W)
-my_tree.heading("Phone",text="Phone",anchor=W)
+my_tree.heading("projectID",text="Project ID",anchor=W)
+my_tree.heading("workerID",text="Worker Name",anchor=W)
+my_tree.heading("frames_total",text="Frames Total",anchor=W)
+my_tree.heading("time_total",text="Time Total",anchor=W)
+my_tree.heading("start_time",text="Start Time",anchor=W)
+my_tree.heading("end_time",text="End Time",anchor=W)
+my_tree.heading("worker1_avg_time",text="W1 Time",anchor=W)
+my_tree.heading("worker2_avg_time",text="W2 Time",anchor=W)
 
 refreshTable()
 
