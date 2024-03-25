@@ -5,7 +5,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import tkinter as tk
 
-#connection later
+#connection
 def connection():
    conn=pymysql.connect(host='localhost',user='root',password='7323', db='renderdb') 
    return conn
@@ -62,7 +62,7 @@ lnameLabel.grid(row=5, column=0, columnspan=1, padx=50, pady=5)
 addressLabel.grid(row=6, column=0, columnspan=1, padx=50, pady=5)
 phoneLabel.grid(row=7, column=0, columnspan=1, padx=50, pady=5)
 
-#text variable later
+#text variable
 studidEntry=Entry(root, width=55,bd=5, font=('Arial', 15))
 fnameEntry=Entry(root, width=55,bd=5, font=('Arial', 15))
 lnameEntry=Entry(root, width=55,bd=5, font=('Arial', 15))
@@ -75,7 +75,7 @@ lnameEntry.grid(row=5, column=1, columnspan=4, padx=5, pady=0)
 addressEntry.grid(row=6, column=1, columnspan=4, padx=5, pady=0)
 phoneEntry.grid(row=7, column=1, columnspan=4, padx=5, pady=0)
 
-#command later
+#command
 addBtn=Button(
     root,text="Add", padx=65, pady=25,width=10, bd=5, font=('Arial', 15),bg="#84F894"
 )
@@ -127,7 +127,5 @@ my_tree.heading("worker1_avg_time",text="W1 Time",anchor=W)
 my_tree.heading("worker2_avg_time",text="W2 Time",anchor=W)
 
 refreshTable()
-
-
 
 root.mainloop()
