@@ -6,17 +6,42 @@ from tkinter import messagebox
 import tkinter as tk
 
 #connection later
+def connection():
+   conn=pymysql.connect(host='localhost',user='root',password='7323', db='renderdb') 
+   return conn
+
+def refreshTable():
+    for data in my_tree.get_children():
+        my_tree.delete(data)
+
+    for array in read():
+        my_tree.insert(parent='',index='end',iid=array,text="",values=(array),tag="orow")
+
+    my_tree.tag_configure('orow',background='#EEEEEE',font=('Arial',12))
+    my_tree.grid(row=8,column=0,columnspan=5,rowspan=11,padx=10,pady=20)
+
+
+
 
 #gui
 root = Tk()
-root.title("Render Queue")
+root.title("Render Performance")
 root.geometry("1080x720")
-mt_tree = ttk.Treeview(root)
+my_tree = ttk.Treeview(root)
 
 #functions later
+def read():
+    conn=connection()
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM performance")
+    results=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return results
+
 
 #gui
-label=Label(root, text="Render Queue", font=('Arial Bold', 30))
+label=Label(root, text="Render Performance", font=('Arial Bold', 30))
 label.grid(row=0, column=0, columnspan=8, rowspan=2, padx=50, pady=40)
 
 studidLabel=Label(root, text="Stud ID", font=('Arial', 15))
@@ -70,6 +95,25 @@ deleteBth.grid(row=7,column=5,columnspan=1,rowspan=2)
 searchBth.grid(row=9,column=5,columnspan=1,rowspan=2)
 resetBth.grid(row=11,column=5,columnspan=1,rowspan=2)
 selectBth.grid(row=13,column=5,columnspan=1,rowspan=2)
+
+style=ttk.Style()
+style.configure("Treeview.Heading",font=('Arial Bold',15))
+my_tree['columns']=("Stud ID","First Name","Last Name","Address","Phone")
+
+my_tree.column("#0", width=0,stretch=NO)
+my_tree.column("Stud ID", anchor=W,width=170)
+my_tree.column("First Name", anchor=W,width=150)
+my_tree.column("Last Name", anchor=W,width=150)
+my_tree.column("Address", anchor=W,width=165)
+my_tree.column("Phone", anchor=W,width=150)
+
+my_tree.heading("Stud ID",text="Student ID",anchor=W)
+my_tree.heading("First Name",text="First Name",anchor=W)
+my_tree.heading("Last Name",text="Last Name",anchor=W)
+my_tree.heading("Address",text="Address",anchor=W)
+my_tree.heading("Phone",text="Phone",anchor=W)
+
+refreshTable()
 
 
 
