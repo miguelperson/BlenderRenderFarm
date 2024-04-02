@@ -1,86 +1,49 @@
 import socket
-#import Client # allos us to use functions created within the gui code
-import os
-from sqlite3 import connect # imports os handling library
 import threading
-import subprocess
+import os
+def handle_client(client_socket, address, downloads_folder):
+    print(f"Connected to {address}")
+    try:
+        # Receive file info (filename and filesize)
+        file_info = client_socket.recv(1024).decode()
+        filename, filesize = file_info.split(';')
+        filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
+        filesize = int(filesize)
 
-from manipulateDB import *
+        confirmation_message = "INFO_RECEIVED"
+        client_socket.send(confirmation_message.encode())
+        # Prepare to receive the file
+        filepath = os.path.join(downloads_folder, filename)
+        with open(filepath, 'wb') as f:
+            bytes_received = 0
+            while bytes_received < filesize:
+                chunk = client_socket.recv(4096)
+                if not chunk:
+                    break  # connection closed
+                f.write(chunk)
+                bytes_received += len(chunk)
+        print(f"File {filename} has been received and saved.")
+    finally:
+        client_socket.close
 
-# server side implementation of socket 
-SERVER = socket.gethostbyname(socket.gethostname()) # gets IP address of server node
-port = 5050 # port 8080 is apparently for HTTPs communications so will play it safe and not run on that port here
-ADDR = (SERVER,port)
-HEADER = 1024 # will be the header for the data we want to send
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
-SAVE_PATH = r"C:\Users\Miguel2\Downloads"
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create sockets, AF INET is the socket type of family which is INET
-server.bind(ADDR)
-
-
-def handle_client(conn, addr): # handles communication between client and server, will use mutithreading
-    print(f"[NEW CONNECTION] {addr} connected.") # tells us who connected, connections will be ruychnning concurrently
-    connected = True 
-    while connected: # waiting to recieve information from client, connection will remain constant until disconnect message sent
-        file_name = conn.recv(HEADER).decode() # the .recv() is a blocking code, will also recieve the file name first
-        if file_name == DISCONNECT_MESSAGE:
-            print(f"[DISCONNECTED] {addr} disconnnected from the server")
-            connected = False
-            break
-        # Receive file size
-        #file_size_bytes = conn.recv(1024)
-        #file_size = int(file_size_bytes)
-
-        # Receive start and end frames
-        frames_info = conn.recv(1024).decode(FORMAT)
-        start_frame, end_frame = map(int, frames_info.split(',')) # assigns the start and end frame values to theircorresponding variables
-
-        # File reception and saving
-        file_path = os.path.join(SAVE_PATH, file_name)
-        with open(file_path, "wb") as file:
-            file_data = b""
-            while True:
-                data = conn.recv(1024)
-                if not data or b"<END>" in data:
-                    file_data += data
-                    break
-                file_data += data
-            file.write(file_data.replace(b"<END>", b""))  # Remove the <END> tag
-
-
-        if conn.recv(1024) == b"<END>": # checks for end tag indicating completion of file transfer
-            print(f"File {file_name} received successfully.")
-        file.write(file_bytes) # writes the file bytes to the file variable
-        
-        #insert_into_project(file_name, client, frames_total, start_frame, end_frame)
-        frames_total = 1 + (end_frame-start_frame) # gives us total frame value
-        #insert_into_project(file_name,addr,frames_total, start_frame, end_frame
-
-        # Blender rendering command
-        blender_command = [
-            "blender", "-b", file_path, 
-            "-o", os.path.join(SAVE_PATH, "frame_#####"), 
-            "-s", str(start_frame), "-e", str(end_frame), "-a"
-        ]
-        subprocess.run(blender_command) # essentialy creates a sort of bat file that is run
-        
-    conn.close() # closes the connection when !DISCONNECT message is sent
-        
-
-def start(): # code for server to start handling connections
-    server.listen() # listening to connections
-    print(f"[LISTENING] Server is listening on {server}")
-    while True: # infinite loop for reasons
-        conn, addr = server.accept() # code blocks and waits on .accept part of code until new connection occurs and then stores address and then store object allowing to send information back to connection
-        thread = threading.Thread(target=handle_client, args=(conn,addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # will tell us all the active client connections
-#        if keyboard.keyboard.is_pressed('u'):
-#            print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}")
-            
-        
-
-print("[STARTING] Server is starting...")
-start()
+def start_server(host, port, downloads_folder):
+    # Ensure the downloads folder exists
+    if not os.path.exists(downloads_folder):
+        os.makedirs(downloads_folder)
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host, port))
+    server.listen(5)
+    print(f"Server listening on {host}:{port}")
+    try:
+        while True:
+            client_socket, addr = server.accept()
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
+            client_thread.start()
+            print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
+    finally:
+        server.close()
+HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
+PORT = 65432        # Port to listen on
+DOWNLOADS_FOLDER = "C:/Users/Miguel2/Downloads/testfolder"  # Path to the folder where files will be saved
+print(HOST) # prints the server IP address
+start_server(HOST, PORT, DOWNLOADS_FOLDER)
