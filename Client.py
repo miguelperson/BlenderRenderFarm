@@ -11,7 +11,7 @@ def connectionFunction(error_callback=None):
     PORT = 5050
     FORMAT = 'utf-8'
     DISCONNECT_MESSAGE = "!DISCONNECT"
-    SERVER = "192.168.99.98"  # Update with the actual server IP
+    SERVER = "192.168.99.98"  # Update with the actual server IP ===============================
     ADDR = (SERVER, PORT)
     counter = 0  # will be used to keep track of the files sent
 
@@ -28,18 +28,36 @@ def connectionFunction(error_callback=None):
         return  # Exit the function or handle the error as needed
     
 
-def senderFunction(blenderFile, outputPath, startFrame, endFrame, client, username):
-    file = open(blenderFile,"rb")
-    file_size = os.path.getsize(blenderFile) # how many bytes the blender file has
-    randomTail = random.randrange(1,99999,1)
-    
-    client.send(f"blendRender{randomTail}.blend".encode(FORMAT)) # will send file name with executable so the server knows its a blender file
-    #client.send(str(file_size).encode()) # typecasting the filesize variable as a string then encoding to send to server
-    client.send(f"{startFrame},{endFrame}".encode(FORMAT)) # start and end frame are concatenated into a string
-    
-    data = file.read()
-    client.sendall(data) # this is going to send the blender file to the server after giving it the initial
-    client.send(b"<END>") # end tag is so the server knows when the end of the file is
+def send_file_to_server(host, port, file_path):
+    if not os.path.isfile(file_path): # checks if file exists
+        print(f"File not found: {file_path}")
+        return    # Prepare file info (filename and filesize)
+    filesize = os.path.getsize(file_path)
+    filename = os.path.basename(file_path)
+    file_info = f"{filename};{filesize}"
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.connect((host, port))
+            print(f"Connected to {host}:{port}")
+
+            # Send file info
+            s.sendall(file_info.encode())
+
+            # Wait for confirmation from the server
+            confirmation = s.recv(1024).decode()
+            if confirmation == "INFO_RECEIVED":
+                # Send the file
+                with open(file_path, 'rb') as f:
+                    while True:
+                        bytes_read = f.read(4096)
+                        if not bytes_read:
+                            break  # File transmitting is done
+                        s.sendall(bytes_read)
+
+            print(f"File {filename} has been sent.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 
 # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
