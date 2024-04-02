@@ -95,7 +95,7 @@ def submission():
         else:
             print("Error: Unable to extract username from the file path.")
 
-        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start, and end frame
+        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start frame, and end frame
         recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
     print(entry1.get())

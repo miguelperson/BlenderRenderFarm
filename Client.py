@@ -5,16 +5,15 @@ import customtkinter
 import socket
 
 FORMAT = 'utf-8'
+HEADER = 64
+PORT = 5050
+FORMAT = 'utf-8'
+DISCONNECT_MESSAGE = "!DISCONNECT"
+SERVER = "192.168.99.98"  # Update with the actual server IP ===============================
+ADDR = (SERVER, PORT)
+counter = 0  # will be used to keep track of the files sent
 
 def connectionFunction(error_callback=None):
-    HEADER = 64
-    PORT = 5050
-    FORMAT = 'utf-8'
-    DISCONNECT_MESSAGE = "!DISCONNECT"
-    SERVER = "192.168.99.98"  # Update with the actual server IP ===============================
-    ADDR = (SERVER, PORT)
-    counter = 0  # will be used to keep track of the files sent
-
     try:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
