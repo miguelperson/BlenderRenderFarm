@@ -28,13 +28,13 @@ def connectionFunction(HOST, PORT,error_callback=None):
         return  # Exit the function or handle the error as needed
     
 
-def send_file_to_server(host, port, file_path):
+def send_file_to_server(file_path, output_folder, start_frame, end_frame, client, username):
     if not os.path.isfile(file_path): # checks if file exists
         print(f"File not found: {file_path}")
         return    # Prepare file info (filename and filesize)
     filesize = os.path.getsize(file_path)
     filename = os.path.basename(file_path)
-    file_info = f"{filename};{filesize}"
+    file_info = f"{filename};{filesize};{start_frame};{end_frame}" # sends all the important information as one sort of byte stream
     # Send file info
     client.sendall(file_info.encode())
 
