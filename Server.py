@@ -6,7 +6,7 @@ def handle_client(client_socket, address, downloads_folder):
     try:
         # Receive file info (filename and filesize)
         file_info = client_socket.recv(1024).decode()
-        filename, filesize = file_info.split(';')
+        filename, filesize, start_frame, end_frame = file_info.split(';') # saves each corresponding attribute to their respective variable
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
 
