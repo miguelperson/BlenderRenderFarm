@@ -1,3 +1,4 @@
+from http import client
 import random
 import socket
 import os
@@ -6,14 +7,14 @@ import socket
 
 FORMAT = 'utf-8'
 HEADER = 64
-PORT = 5050
+
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "192.168.99.98"  # Update with the actual server IP ===============================
+# HOST = '192.168.99.113'  # Server's IP  # Update with the actual server IP ===============================
 ADDR = (SERVER, PORT)
 counter = 0  # will be used to keep track of the files sent
 
-def connectionFunction(error_callback=None):
+def connectionFunction(HOST, PORT,error_callback=None):
     try:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
@@ -34,29 +35,22 @@ def send_file_to_server(host, port, file_path):
     filesize = os.path.getsize(file_path)
     filename = os.path.basename(file_path)
     file_info = f"{filename};{filesize}"
+    # Send file info
+    client.sendall(file_info.encode())
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        try:
-            s.connect((host, port))
-            print(f"Connected to {host}:{port}")
+    # Wait for confirmation from the server
+    confirmation = s.recv(1024).decode()
+    if confirmation == "INFO_RECEIVED":
+        # Send the file
+        with open(file_path, 'rb') as f:
+            while True:
+                bytes_read = f.read(4096)
+                if not bytes_read:
+                    break  # File transmitting is done
+                s.sendall(bytes_read)
 
-            # Send file info
-            s.sendall(file_info.encode())
+    print(f"File {filename} has been sent.")
 
-            # Wait for confirmation from the server
-            confirmation = s.recv(1024).decode()
-            if confirmation == "INFO_RECEIVED":
-                # Send the file
-                with open(file_path, 'rb') as f:
-                    while True:
-                        bytes_read = f.read(4096)
-                        if not bytes_read:
-                            break  # File transmitting is done
-                        s.sendall(bytes_read)
-
-            print(f"File {filename} has been sent.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
 
 
 # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved

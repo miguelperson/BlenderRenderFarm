@@ -16,6 +16,9 @@ username = ""
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
+HOST = '192.168.99.113'  # Server's IP
+PORT = 65432
+
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
 root.geometry("800x300")
 root.title('ESA Blender Render Farm')
@@ -186,7 +189,7 @@ disconnectButton = customtkinter.CTkButton(master=frame, text='Disconnect', comm
 disconnectButton.grid(row=5, column=2, pady=7, padx=5)
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
-client = connectionFunction(error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
+client = connectionFunction(HOST, PORT, error_callback=handle_error) # attempts to connect to the server, execute 'handle_error' function if connection fails
 
 file = customtkinter.CTk
 
