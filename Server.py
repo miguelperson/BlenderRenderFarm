@@ -9,6 +9,8 @@ def handle_client(client_socket, address, downloads_folder):
         filename, filesize, start_frame, end_frame = file_info.split(';') # saves each corresponding attribute to their respective variable
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
+        start_frame = int(start_frame)
+        end_frame = int(end_frame)
 
         confirmation_message = "INFO_RECEIVED"
         client_socket.send(confirmation_message.encode())

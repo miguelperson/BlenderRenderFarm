@@ -39,15 +39,15 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
     client.sendall(file_info.encode())
 
     # Wait for confirmation from the server
-    confirmation = s.recv(1024).decode()
+    confirmation = client.recv(1024).decode()
     if confirmation == "INFO_RECEIVED":
         # Send the file
         with open(file_path, 'rb') as f:
             while True:
-                bytes_read = f.read(4096)
+                bytes_read = f.read(4096) #sendn file as chunks so server can recieve in chunks as well
                 if not bytes_read:
                     break  # File transmitting is done
-                s.sendall(bytes_read)
+                client.sendall(bytes_read)
 
     print(f"File {filename} has been sent.")
 
