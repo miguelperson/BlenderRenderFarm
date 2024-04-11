@@ -11,18 +11,19 @@ HEADER = 64
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 # HOST = '192.168.99.113'  # Server's IP  # Update with the actual server IP ===============================
-ADDR = (SERVER, PORT)
+# ADDR = (HOST, PORT)
 counter = 0  # will be used to keep track of the files sent
 
 def connectionFunction(HOST, PORT,error_callback=None): # is technically called by the front end just to keep it simple, host and port passed from front end
     try:
+        ADDR = (HOST,PORT)
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
         client_IP = socket.gethostbyname(socket.gethostname())
-        print(f"Connected to {SERVER} on {PORT}")
+        print(f"Connected to {HOST} on {PORT}")
         return client
     except socket.error as e:
-        print(f"Error connecting to {SERVER} on {PORT}: {e}")
+        print(f"Error connecting to {HOST} on {PORT}: {e}")
         if error_callback:
             error_callback()
         return  # Exit the function or handle the error as needed
@@ -68,4 +69,4 @@ def recieverFunction(client, outputFolder):
         f.write(recievedData)
         
 def disconnectMessage(client):
-    client.send('!DISCONNECT'.encode())
+    client.send('!DISCONNECT;;;'.encode())

@@ -11,7 +11,9 @@ def handle_client(client_socket, address, downloads_folder):
         filesize = int(filesize)
         start_frame = int(start_frame)
         end_frame = int(end_frame)
-
+        if filename == '!DISCONNECT':
+            client.socket.close
+            return
         confirmation_message = "INFO_RECEIVED"
         client_socket.send(confirmation_message.encode()) # informs client that file info was recieved
         # Prepare to receive the file
@@ -25,8 +27,8 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # finishes writing the 
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-    finally:
-        client_socket.close
+    except:
+        print('file transfer failed or connection was closed')
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
