@@ -1,6 +1,16 @@
 import socket
 import threading
 import os
+
+def renderFile(filepath):
+    # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
+    blender_path = "C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"
+    blend_file = filepath
+    output_dir = os.path.dirname(filepath)  # Output to the same directory as the received file
+    command_string = f'"{blender_path}" "{blend_file}" -b -f 35 -o "{os.path.join(output_dir, "###")}"'
+    # Execute the command
+    subprocess.run(command_string, shell=True)
+
 def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}") # prints the ip of the client that connected
     try:
