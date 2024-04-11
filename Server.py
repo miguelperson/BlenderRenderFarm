@@ -2,12 +2,12 @@ import socket
 import threading
 import os
 
-def renderFile(filepath):
+def renderFile(filepath, start_frame, end_frame):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
     blender_path = "C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"
     blend_file = filepath
     output_dir = os.path.dirname(filepath)  # Output to the same directory as the received file
-    command_string = f'"{blender_path}" "{blend_file}" -b -f 35 -o "{os.path.join(output_dir, "###")}"'
+    command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{os.path.join(output_dir, "###")}"'
     # Execute the command
     subprocess.run(command_string, shell=True)
 
@@ -37,6 +37,7 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # finishes writing the 
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
+        renderFile(filepath, start_frame, end_frame)
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
 
