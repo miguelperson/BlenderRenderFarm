@@ -5,7 +5,7 @@ def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}") # prints the ip of the client that connected
     try:
         # Receive file info (filename and filesize)
-        file_info = client_socket.recv(1024).decode() # recieve the file info from client
+        file_info = client_socket.recv(1024).decode() # recieve the file info from client, is holding code, will wait here until client sends code
         filename, filesize, start_frame, end_frame = file_info.split(';') # saves each corresponding attribute to their respective variable
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
