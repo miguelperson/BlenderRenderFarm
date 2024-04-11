@@ -2,7 +2,7 @@ import socket
 import threading
 import os
 def handle_client(client_socket, address, downloads_folder):
-    print(f"Connected to {address}")
+    print(f"Connected to {address}") # prints the ip of the client that connected
     try:
         # Receive file info (filename and filesize)
         file_info = client_socket.recv(1024).decode() # recieve the file info from client
@@ -31,7 +31,7 @@ def handle_client(client_socket, address, downloads_folder):
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
     if not os.path.exists(downloads_folder):
-        os.makedirs(downloads_folder)
+        os.makedirs(downloads_folder) # makes folder if folder dose not exist
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
     server.listen(5)

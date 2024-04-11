@@ -14,7 +14,7 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 ADDR = (SERVER, PORT)
 counter = 0  # will be used to keep track of the files sent
 
-def connectionFunction(HOST, PORT,error_callback=None):
+def connectionFunction(HOST, PORT,error_callback=None): # is technically called by the front end just to keep it simple, host and port passed from front end
     try:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
