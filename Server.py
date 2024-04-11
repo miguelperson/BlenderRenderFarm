@@ -1,6 +1,7 @@
 import socket
 import threading
 import os
+import subprocess
 
 def renderFile(filepath, start_frame, end_frame):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
