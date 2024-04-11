@@ -16,7 +16,7 @@ username = ""
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
-HOST = '192.168.99.113'  # Server's IP, change this if the server is reset at any point
+HOST = '192.168.99.124'  # Server's IP, change this if the server is reset at any point
 PORT = 65432
 
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
