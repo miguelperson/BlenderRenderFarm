@@ -55,8 +55,8 @@ def start_server(host, port, downloads_folder):
             client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
-    finally:
-        server.close()
+    except Exception as e:
+        print(f'An error occurred: {e}')
 HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
 PORT = 65432        # Port to listen on
 DOWNLOADS_FOLDER = "C:/Users/Miguel2/Downloads/testfolder"  # Path to the folder where files will be saved
