@@ -37,8 +37,8 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # finishes writing the 
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-    except:
-        print('file transfer failed or connection was closed')
+    except Exception as e:
+        print(f"An error occurred:{e}") # prints any exceptions that may come from the code
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
