@@ -40,9 +40,9 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
 
     # Wait for confirmation from the server
     confirmation = client.recv(1024).decode()
-    if confirmation == "INFO_RECEIVED":
+    if confirmation == "INFO_RECEIVED": # if the recieved message is the confirmation message
         # Send the file
-        with open(file_path, 'rb') as f:
+        with open(file_path, 'rb') as f: # opens the file in read byte mode
             while True:
                 bytes_read = f.read(4096) #sendn file as chunks so server can recieve in chunks as well
                 if not bytes_read:

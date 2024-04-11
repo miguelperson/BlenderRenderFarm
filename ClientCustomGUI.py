@@ -4,7 +4,7 @@ from tkinter import messagebox
 import ctypes as ct
 import customtkinter
 import os
-from Client import senderFunction, recieverFunction, connectionFunction, disconnectMessage# importing client backend so we can call functions from the backend in this code
+from Client import send_file_to_server, recieverFunction, connectionFunction, disconnectMessage# importing client backend so we can call functions from the backend in this code
 #---------------------------------------------------------------------------------------------------------------------------------------------
 
 path_output = ""
@@ -16,7 +16,7 @@ username = ""
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
-HOST = '192.168.99.113'  # Server's IP
+HOST = '192.168.99.113'  # Server's IP, change this if the server is reset at any point
 PORT = 65432
 
 root = customtkinter.CTk()  # custmtkinter becomes the main type thing to regard the main frame
@@ -98,7 +98,7 @@ def submission():
         else:
             print("Error: Unable to extract username from the file path.")
 
-        senderFunction(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start frame, and end frame
+        send_file_to_server(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start frame, and end frame
         recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
     print(entry1.get())
