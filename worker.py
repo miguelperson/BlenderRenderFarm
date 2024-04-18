@@ -1,5 +1,14 @@
 # this file will hold the code used by the worker computers
 
+FORMAT = 'utf-8'
+HEADER = 64
+
+def connect():
+    HOST = '192.168.99.124'
+    PORT = 65432
+    
+
+
 def render_third_frame(blender_path, blend_file): # render function responsible for processing and rendering the photos
     # Extract the directory from the blend file path
     output_dir = os.path.dirname(blend_file) # saves output folder file path
