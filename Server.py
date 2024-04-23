@@ -34,8 +34,8 @@ def handle_client(client_socket, address, downloads_folder):
             while bytes_received < filesize: # so long as the bytes_recieved is less than the indicated filesize
                 chunk = client_socket.recv(4096) # recieve 4096 more bytes
                 if not chunk: # if the chunk ends up not being the full 4096 bytes
-                    break  # connection closed
-                f.write(chunk) # finishes writing the 
+                    break  # finishes recieving
+                f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         renderFile(filepath, start_frame, end_frame)
