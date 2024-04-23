@@ -70,6 +70,8 @@ def inputErrorMessage(errorType):
         messagebox.showerror('Error', 'Please ensure that blend file/output file path inputs are valid')
     elif errorType == 2:  # indicates invalid frames string
         messagebox.showerror('Error', 'butt inspection will begin immediately')
+    elif errorType == 3:
+        messagebox.showerror('Error', 'start frame cannot be greater than end frame')
 
 def submission():
     global client
