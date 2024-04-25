@@ -4,6 +4,8 @@ import random
 import socket
 import os
 import socket
+import subprocess
+from pathlib import Path
 
 worker = None
 FORMAT = 'utf-8'
@@ -33,19 +35,28 @@ def render_third_frame(blender_path, blend_file): # render function responsible 
     print('hello butt stuff')
     print(output_dir)
     
-def waitForCommand(worker):
-    print('place holder')
+def waitForCommand(worker, downloads_path):
     while True:
         fileInfo = worker.recv().decode(HEADER) # name;file size
         fileName, fileSize = fileInfo.split(';')
-        worker.send(confirmation_message.encode())
+        worker.send(confirmation_message.encode()) # send
+        filePath = os.path.join(downloads_path, fileName)
+        with open(filePath, 'wb') as f: # recieve the blend file
+            bytes_recieved = 0
+            while bytes_recieved < fileSize:
+                chunk = worker.recv(4096)
+                if not chunk:
+                    break
+                f.write(chunk)
+                bytes_recieved += len(chunk)
+        worker.send(confirmation_message.encode) # send
+        
         
         
         
 
 def main(): # will need to change functions to allow for server to send data to worker computer
     blender_path = '../../../../Program Files/Blender Foundation/Blender 3.6/blender.exe' # relative path to the blender executable file location
+    downloads_path = str(Path.home() / "Downloads")
     worker = connect()
-    waitForCommand(worker)
-    # Ask the user for the .blend file path
-    blend_file = input("Enter the path to the .blend file: ")
+    waitForCommand(worker, downloads_path)
