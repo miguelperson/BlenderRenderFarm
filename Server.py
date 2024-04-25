@@ -53,8 +53,10 @@ def start_server(host, port, downloads_folder):
     try:
         while True:
             client_socket, addr = server.accept()
-            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
-            client_thread.start()
+            role = client_socket.recv(1024).decode()
+            if role == 'client':
+                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
+                client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
     except Exception as e:
         print(f'An error occurred: {e}')
