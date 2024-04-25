@@ -28,9 +28,16 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
     frameToRender = int(worker.recv().decode(HEADER)) # recieves frame to render
     worker.send(confirmation_message.encode()) # send confirm
     # Ensure paths are enclosed in quotes
-    command_string = f'"{blender_path}" "{filePath}" -b -f {frameToRender} -E CYCLES -o "{os.path.join(downloads_path, "####")}"' # creates the command string we will use for rendering in command prompt
-
+    outputFilePath = os.path.join(downloads_path,"#####")
+    command_string = f'"{blender_path}" "{filePath}" -b -f {frameToRender} -E CYCLES -F PNG -o "{outputFilePath}"' # creates the command string we will use for rendering in command prompt
     subprocess.run(command_string, shell=True)  # Added shell=True for executing the command string
+    outputFileName = f'{frameToRender:05d}'+'.png'
+    renderFilePath = downloads_path+'\\'+outputFileName
+    if not os.path.isfile(renderFilePath): # checks if file exists
+        print(f"File not found: {renderFilePath}")
+        return
+    fileSize = os.path.getsize(renderFilePath)
+    
     
 def waitForCommand(worker, downloads_path, blender_path):
     while True:
