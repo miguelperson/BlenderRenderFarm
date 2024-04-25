@@ -57,6 +57,8 @@ def start_server(host, port, downloads_folder):
             if role == 'client':
                 client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
                 client_thread.start()
+            if role == 'worker':
+                print('place holder for handle worker code')
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
     except Exception as e:
         print(f'An error occurred: {e}')
