@@ -44,7 +44,7 @@ def insert_into_performance(projectID, workerID, frames_total, time_total, start
     sql_exe(sql,val)
 
 #Delete the row
-def remove_from_project(projectID,):
+def remove_from_project(projectID):
     sql = "DELETE FROM project WHERE projectID = %s"
     val = (projectID,)  
     sql_exe(sql,val)

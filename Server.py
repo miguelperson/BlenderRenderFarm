@@ -41,6 +41,9 @@ def handle_client(client_socket, address, downloads_folder):
         renderFile(filepath, start_frame, end_frame)
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
+        
+def handle_proletarian(prol, address):
+    print('placeholder')
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
