@@ -25,7 +25,7 @@ def connect():
 
 
 def render_third_frame(worker, blender_path, filePath, downloads_path): # render function responsible for processing and rendering the photos
-    frameToRender = int(worker.recv().decode(HEADER)) # recieves frame to render
+    frameToRender = int(worker.recv().decode(HEADER)) # recieves int indicating what frame to render
     worker.send(confirmation_message.encode()) # send confirm
     # Ensure paths are enclosed in quotes
     outputFilePath = os.path.join(downloads_path,"#####")
@@ -39,14 +39,14 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
     fileSize = os.path.getsize(renderFilePath)
     fileInfo = f'{outputFileName};{fileSize}'
     worker.sendall(fileInfo) # send
-    confirmation = client.recv(HEADER).decode()
+    confirmation = worker.recv(HEADER).decode()
     if confirmation == "INFO_RECIEVED":
         with open(renderFilePath,'rb') as f:
             while True:
                 bytes_read = f.read(4096)
                 if not bytes_read:
                     break
-                client.sendall(bytes_read)
+                worker.sendall(bytes_read)
     
     
 def waitForCommand(worker, downloads_path, blender_path):
