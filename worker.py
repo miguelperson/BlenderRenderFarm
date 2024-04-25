@@ -24,15 +24,13 @@ def connect():
     return worker
 
 
-def render_third_frame(blender_path, filePath): # render function responsible for processing and rendering the photos
-    # Extract the directory from the blend file path
-    output_dir = os.path.dirname(blend_file) # saves output folder file path
-
+def render_third_frame(worker, blender_path, filePath, downloads_path): # render function responsible for processing and rendering the photos
+    frameToRender = int(worker.recv().decode(HEADER)) # recieves frame to render
+    worker.send(confirmation_message.encode()) # send confirm
     # Ensure paths are enclosed in quotes
-    command_string = f'"{blender_path}" "{blend_file}" -b -f 35 -o "{os.path.join(output_dir, "###")}"' # creates the command string we will use for rendering in command prompt
+    command_string = f'"{blender_path}" "{filePath}" -b -f {frameToRender} -E CYCLES -o "{os.path.join(downloads_path, "####")}"' # creates the command string we will use for rendering in command prompt
 
     subprocess.run(command_string, shell=True)  # Added shell=True for executing the command string
-    print(output_dir)
     
 def waitForCommand(worker, downloads_path, blender_path):
     while True:
@@ -49,7 +47,7 @@ def waitForCommand(worker, downloads_path, blender_path):
                 f.write(chunk)
                 bytes_recieved += len(chunk)
         worker.send(confirmation_message.encode) # send
-        renderThread = threading.Thread(target = render_third_frame, args =(blender_path, filePath))
+        renderThread = threading.Thread(target = render_third_frame, args =(worker, blender_path, filePath, downloads_path))
         renderThread.start()
         
         
