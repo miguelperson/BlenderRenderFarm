@@ -4,7 +4,7 @@ import threading
 import os
 import subprocess
 from tkinter import INSERT
-from manipulateDB import insert_into_project
+from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 
 def renderFile(filepath, start_frame, end_frame):
@@ -48,6 +48,8 @@ def handle_client(client_socket, address, downloads_folder):
         
 def handle_proletarian(prol, address,downloads_folder):
     print(f'Worker computer: {address} has connected')
+    while True:
+        renderProject = get_recent_project()
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists

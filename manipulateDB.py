@@ -39,7 +39,7 @@ def get_recent_project():
         
     mycursor.close()
     mydb.close()
-    return results
+    return results[0]
     
         
 def insert_into_workers(workerIP, available, current_project):
