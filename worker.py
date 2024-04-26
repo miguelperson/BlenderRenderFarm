@@ -30,7 +30,7 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
     # Ensure paths are enclosed in quotes
     outputFilePath = os.path.join(downloads_path,"#####")
     command_string = f'"{blender_path}" -b "{filePath}" -o "{outputFilePath}"  -f {frameToRender} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
-    subprocess.run(command_string, shell=True)  # Added shell=True for executing the command string
+    subprocess.run(command_string, shell=True)
     outputFileName = f'{frameToRender:05d}'+'.png'
     renderFilePath = downloads_path+'\\'+outputFileName
     if not os.path.isfile(renderFilePath): # checks if file exists
