@@ -7,11 +7,10 @@ from tkinter import INSERT
 from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 
-def renderFile(filepath, start_frame, end_frame):
+def renderFile(blend_file, start_frame, end_frame, client_socket):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
-    blender_path = "C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"
-    blend_file = filepath
-    output_dir = os.path.dirname(filepath)  # Output to the same directory as the received file
+    blender_path = '../../../../Program Files/Blender Foundation/Blender 3.6/blender.exe' # relative path to the blender executable file 
+    output_dir = os.path.dirname(blender_path)  # Output to the same directory as the received file
     command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{os.path.join(output_dir, "###")}"'
     # Execute the command
     subprocess.run(command_string, shell=True)
@@ -42,7 +41,7 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-        renderFile(filepath, start_frame, end_frame)
+        renderFile(filepath, start_frame, end_frame, client_socket)
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
