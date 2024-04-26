@@ -3,6 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import ctypes as ct
 import customtkinter
+import threading
 import os
 from Client import send_file_to_server, recieverFunction, connectionFunction, disconnectMessage# importing client backend so we can call functions from the backend in this code
 #---------------------------------------------------------------------------------------------------------------------------------------------
@@ -99,8 +100,9 @@ def submission():
             username = path_components[users_index + 1]
         else:
             print("Error: Unable to extract username from the file path.")
-
-        send_file_to_server(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start frame, and end frame
+        transmitFile = threading.Thread(target= send_file_to_server, args = (entry1.get(), entry2.get(), start_frame, end_frame, client, username))
+        transmitFile.start()
+        # send_file_to_server(entry1.get(), entry2.get(), start_frame, end_frame, client, username) # passes through the blender file location, output folder, start frame, and end frame
         # recieverFunction(client, outputFolder) # this code will be responsible for recieving the files from the server
 
     print(entry1.get())
