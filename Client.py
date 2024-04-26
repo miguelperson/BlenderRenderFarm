@@ -19,9 +19,9 @@ def connectionFunction(HOST, PORT,error_callback=None): # is technically called 
         ADDR = (HOST,PORT)
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
-        client.sendall(b'worker')
+        client.sendall(b'worker').encode()
         client_IP = socket.gethostbyname(socket.gethostname())
-        # print(f"Connected to {HOST} on {PORT}")
+        print(f"Connected to {HOST} on {PORT}")
         return client
     except socket.error as e:
         print(f"Error connecting to {HOST} on {PORT}: {e}")
