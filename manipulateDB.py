@@ -35,7 +35,7 @@ def get_recent_project():
     mycursor.execute(sql)
         
     # Fetch all the rows in a list of lists.
-    results = mycursor.fetchall()
+    results = mycursor.fetchall() # storing list of Tuples
         
     mycursor.close()
     mydb.close()
