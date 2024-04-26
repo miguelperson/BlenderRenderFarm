@@ -1,3 +1,4 @@
+from asyncio import Handle
 import socket
 import threading
 import os
@@ -65,7 +66,8 @@ def start_server(host, port, downloads_folder):
                 client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
                 client_thread.start()
             if role == 'worker':
-                # worker creation thread will be here
+                proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
+                proletarian_thread.start()
                 print('place holder')
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
     except Exception as e:
