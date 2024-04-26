@@ -47,8 +47,8 @@ def handle_client(client_socket, address, downloads_folder):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
         
-def handle_proletarian(prol, address):
-    print('placeholder')
+def handle_proletarian(prol, address,downloads_folder):
+    print(f'Worker computer: {address} has connected')
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists

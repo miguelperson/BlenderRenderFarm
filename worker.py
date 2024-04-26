@@ -39,14 +39,14 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
     fileSize = os.path.getsize(renderFilePath)
     fileInfo = f'{outputFileName};{fileSize}'
     worker.sendall(fileInfo) # send
-    confirmation = worker.recv(HEADER).decode()
+    confirmation = worker.recv(HEADER).decode() # recieve confirmation
     if confirmation == "INFO_RECIEVED":
         with open(renderFilePath,'rb') as f:
             while True:
                 bytes_read = f.read(4096)
                 if not bytes_read:
                     break
-                worker.sendall(bytes_read)
+                worker.sendall(bytes_read) # send
     
     
 def waitForCommand(worker, downloads_path, blender_path):
