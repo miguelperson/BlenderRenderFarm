@@ -26,6 +26,20 @@ def insert_into_project(projectID, client, project_name, ames_total, start_frame
     sql = "INSERT INTO project (projectID, client, project_name, ames_total, start_frame, end_frame, completed) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     val = (projectID, client, project_name, ames_total, start_frame, end_frame, completed)
     sql_exe(sql,val)
+
+def get_recent_project():
+    mydb = connect_to_db()
+    mycursor = mydb.cursor()
+        
+    sql = "SELECT projectID, project_name, start_frame, end_frame FROM project ORDER BY projectID"
+    mycursor.execute(sql)
+        
+    # Fetch all the rows in a list of lists.
+    results = mycursor.fetchall()
+        
+    mycursor.close()
+    mydb.close()
+    return results
     
         
 def insert_into_workers(workerIP, available, current_project):
