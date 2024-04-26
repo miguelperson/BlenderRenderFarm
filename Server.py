@@ -42,6 +42,7 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
+        renderFile(filepath, start_frame, end_frame)
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
@@ -62,7 +63,8 @@ def start_server(host, port, downloads_folder):
     try:
         while True:
             client_socket, addr = server.accept()
-            role = str(client_socket.recv(1024).decode())
+            # role = str(client_socket.recv(1024).decode())
+            '''
             if role == 'client':
                 client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
                 client_thread.start()
@@ -70,6 +72,7 @@ def start_server(host, port, downloads_folder):
                 proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
                 proletarian_thread.start()
                 print('place holder')
+            '''
             client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
