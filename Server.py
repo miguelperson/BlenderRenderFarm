@@ -64,15 +64,15 @@ def start_server(host, port, downloads_folder):
         while True:
             client_socket, addr = server.accept()
             # role = str(client_socket.recv(1024).decode())
-            '''
-            if role == 'client':
-                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
-                client_thread.start()
-            if role == 'worker':
-                proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
-                proletarian_thread.start()
-                print('place holder')
-            '''
+            
+#            if role == 'client':
+#                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
+#                client_thread.start()
+#           if role == 'worker':
+#               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
+#               proletarian_thread.start()
+#               print('place holder')
+            
             client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
