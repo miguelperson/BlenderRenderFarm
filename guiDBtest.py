@@ -50,11 +50,12 @@ def add():
 label=Label(root, text="Render Performance", font=('Arial Bold', 30))
 label.grid(row=0, column=0, columnspan=8, rowspan=2, padx=50, pady=40)
 
-studidLabel=Label(root, text="Stud ID", font=('Arial', 15))
-fnameLabel=Label(root, text="First Name", font=('Arial', 15))
-lnameLabel=Label(root, text="Last Name", font=('Arial', 15))
-addressLabel=Label(root, text="Address", font=('Arial', 15))
-phoneLabel=Label(root, text="Phone", font=('Arial', 15))
+studidLabel=Label(root, text="Project ID", font=('Arial', 15))
+fnameLabel=Label(root, text="Worker Name", font=('Arial', 15))
+lnameLabel=Label(root, text="Frames Total", font=('Arial', 15))
+addressLabel=Label(root, text="Time Total", font=('Arial', 15))
+phoneLabel=Label(root, text="Start Time", font=('Arial', 15))
+
 
 studidLabel.grid(row=3, column=0, columnspan=1, padx=50, pady=5)
 fnameLabel.grid(row=4, column=0, columnspan=1, padx=50, pady=5)
@@ -107,7 +108,7 @@ style.configure("Treeview.Heading",font=('Arial Bold',15))
 my_tree['columns'] = ("projectID", "workerID", "frames_total", "time_total", "start_time", "end_time", "worker1_avg_time", "worker2_avg_time")
 
 
-my_tree.column("#0", width=0,stretch=NO)
+my_tree.column("#0", width=0,stretch=YES)
 my_tree.column("projectID", anchor=W,width=150)
 my_tree.column("workerID", anchor=W,width=150)
 my_tree.column("frames_total", anchor=W,width=150)
