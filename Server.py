@@ -6,6 +6,7 @@ import subprocess
 from tkinter import INSERT
 from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
+from pathlib import Path
 
 def renderFile(blend_file, start_frame, end_frame, client_socket):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
@@ -63,15 +64,14 @@ def start_server(host, port, downloads_folder):
         while True:
             client_socket, addr = server.accept()
             # role = str(client_socket.recv(1024).decode())
-            
+            # personal note: perhaps we would want to move these identifier if conditions to a separate function that gets called?
 #            if role == 'client':
 #                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
 #                client_thread.start()
 #           if role == 'worker':
 #               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
 #               proletarian_thread.start()
-#               print('place holder')
-            
+#               print('place holder
             client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
@@ -81,6 +81,6 @@ def start_server(host, port, downloads_folder):
 
 HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
 PORT = 65432        # Port to listen on
-DOWNLOADS_FOLDER = "C:/Users/Miguel2/Downloads/testfolder"  # Path to the folder where files will be saved
+DOWNLOADS_FOLDER = str(Path.home() / "Downloads")  # Path to the folder where files will be saved
 print(HOST) # prints the server IP address
 start_server(HOST, PORT, DOWNLOADS_FOLDER)
