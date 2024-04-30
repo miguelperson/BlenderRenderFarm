@@ -5,7 +5,7 @@ from tkinter import Label, Scrollbar, Canvas, Frame, Menu, messagebox, Toplevel,
 # Root window configuration
 root = tk.Tk()
 root.state('zoomed')
-root.title("Performance Table")
+root.title("Project Table")
 
 # Define colors and styles for the dark theme
 background_color = "#333333"
@@ -71,7 +71,7 @@ def update_row(row_data):
         try:
             conn = connection()
             cursor = conn.cursor()
-            cursor.execute(f"UPDATE performance SET {updates} WHERE projectID=%s", values)
+            cursor.execute(f"UPDATE project SET {updates} WHERE projectID=%s", values)
             conn.commit()
             messagebox.showinfo("Success", "Record updated successfully.", background=background_color, foreground=text_color)
         except Exception as e:
@@ -94,7 +94,7 @@ def delete_row(projectID):
         try:
             conn = connection()
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM performance WHERE projectID = %s", (projectID,))
+            cursor.execute("DELETE FROM project WHERE projectID = %s", (projectID,))
             conn.commit()
             messagebox.showinfo("Success", "Row deleted successfully.")
         except Exception as e:
@@ -111,7 +111,7 @@ def display():
     scrollable_frame.pack(fill='both', expand=True)
     conn = connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM performance")
+    cursor.execute("SELECT * FROM project")
     data = cursor.fetchall()
     global column_names
     column_names = [desc[0] for desc in cursor.description]

@@ -25,7 +25,7 @@ mysql
 # Create Tables - Mikaela :) :)
 """
 
-#mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255), project_name VARCHAR(255), ames_total smallint UNSIGNED, start_frame smallint UNSIGNED, end_frame smallint UNSIGNED, completed ENUM('1', '2', '3'))") 
+#mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255), project_name VARCHAR(255), start_frame smallint UNSIGNED, end_frame smallint UNSIGNED, completed ENUM('1', '2', '3'))") 
 #mycursor.execute("CREATE TABLE workers (workerIP VARCHAR(15), available TINYINT(1), current_project INT, FOREIGN KEY (current_project) REFERENCES project(projectID))")
 #TINYINT(1) = true
 #mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
@@ -40,16 +40,18 @@ mysql
 mycursor.execute("SHOW TABLES")
 for x in mycursor:
   print(x)
-
+"""
+"""
 #describe the columns of the table (change the name to the table you want to DESCRIBE)
-mycursor.execute("DESCRIBE performance")
+
+mycursor.execute("DESCRIBE project")
 result = mycursor.fetchall()
 for row in result:
     print(row)
 """
 """
 #Show the contents of the table (change the name of the to the table you want the data FROM)
-mycursor.execute("SELECT * FROM performance")
+mycursor.execute("SELECT * FROM project")
 
 # Fetch all rows from the cursor
 result = mycursor.fetchall()
