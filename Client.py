@@ -55,7 +55,7 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
     zip_name, zip_size = zip_info.split(';')
     zip_name = os.path.basename(zip_name)
     zip_size = int(zip_size)
-    client.send("INFO_RECIEVED").encode()
+    client.send("INFO_RECIEVED".encode())
     filePath = os.path.join(output_folder,zip_name)
     with open(filePath, 'wb') as f:
         bytes_recieved = 0
