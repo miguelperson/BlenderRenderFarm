@@ -9,13 +9,11 @@ from random import randrange
 from pathlib import Path
 import zipfile
 
-def renderFile(filepath, start_frame, end_frame, downloads_folder):
-    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable file location
-    blend_file = filepath
-    outputLocation = os.path.join(downloads_folder, 'frame_#####')  # Use os.path.join to ensure proper path formatting
-
+def renderFile(filepath, start_frame, downloads_folder):
+    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable 
+    outputFilePath = os.path.join(downloads_folder, "####")
     # Construct the command string using the corrected output location
-    command_string = f'"{blender_path}" -b "{blend_file}" -s {start_frame} -e {end_frame} -a -o "{outputLocation}"'
+    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f{start_frame}'
 
     # Execute the command
     subprocess.run(command_string, shell=True)
@@ -51,7 +49,9 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-        renderFile(filepath, start_frame, end_frame, downloads_folder)
+        while start_frame <= end_frame:
+            renderFile(filepath, start_frame, downloads_folder)
+            start += 1
         # zipFile()
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
