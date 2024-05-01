@@ -27,7 +27,7 @@ def renderFile(filepath, start_frame, end_frame, downloads_folder):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
     blender_path = "C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"
     blend_file = filepath
-    output_dir = os.path.dirname(filepath)  # Output to the same directory as the received file
+    output_dir =   downloads_folder + '\\'+'#####'# Output to the same directory as the received file
     #command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{os.path.join(output_dir, "###")}"'
     outputLocation = downloads_folder+'\\'+'#####'
     command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{outputLocation}"'
