@@ -11,7 +11,7 @@ import zipfile
 
 def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_folder):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
-    blender_path = '../../../../Program Files/Blender Foundation/Blender 3.6/blender.exe' # relative path to the blender executable file 
+    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable file 
     print('after blender path')
     outputFilePath = os.path.join(downloads_folder,"#####")
     print('after outputFilePath')
