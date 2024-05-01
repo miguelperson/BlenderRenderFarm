@@ -53,21 +53,21 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
                     break  # File transmitting is done
                 client.sendall(bytes_read)
     print(f"File {filename} has been sent.")
-    
+
     zip_info = client.recv(1024).decode()
     zip_name, zip_size = zip_info.split(';')
     zip_name = os.path.basename(zip_name)
     zip_size = int(zip_size)
     client.send("INFO_RECEIVED".encode())
-    filePath = os.path.join(output_folder, zip_name)
-    with open(filePath, 'wb') as f:
-        bytes_recieved = 0
-        while bytes_recieved < zip_size:  # so long as the bytes_recieved is less than the indicated filesize
-            chunk = client.recv(4096)  # recieve 4096 more bytes
-            if not chunk:  # if the chunk ends up not being the full 4096 bytes
-                break  # finishes recieving
-            f.write(chunk)  # writes to file
-            bytes_recieved += len(chunk)  # would just append whats left at this point
+    zip_file_path = os.path.join(output_folder, zip_name)
+    with open(zip_file_path, 'wb') as f:
+        bytes_received = 0
+        while bytes_received < zip_size:
+            chunk = client.recv(4096)
+            if not chunk:
+                break
+            f.write(chunk)
+            bytes_received += len(chunk)
         print(f"File {filename} has been received and saved.")
 
 
