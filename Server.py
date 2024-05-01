@@ -20,8 +20,17 @@ def renderFile(filepath, start_frame, downloads_folder):
     print(f"Rendering completed: Files are saved in {downloads_folder}")
 
     
-def zipFile():
-    print('place holder') 
+def zipProject(downloads_folder, fileName):
+    temp= fileName.split('.')
+    projName = temp[0]
+    zip_file_path = os.path.join(downloads_folder, f"{projName}.zip")
+
+    with zipfile.ZipFile(zip_file_path, 'w') as zipf:
+        for root,dirs,files in os.walk(downloads_folder):
+            for file in files:
+                if file.endswith(".png"):
+                    zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root,file), downloads_folder))
+    return zip_file_path
 
 def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}") # prints the ip of the client that connected
@@ -52,7 +61,7 @@ def handle_client(client_socket, address, downloads_folder):
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
             start += 1
-        # zipFile()
+        zipFilePath = zipProject(downloads_folder, str(filename))
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
