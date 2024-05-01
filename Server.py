@@ -17,6 +17,11 @@ def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_fold
     print('after outputFilePath')
     command_string = f'"{blender_path}" -b "{blend_file}" -o "{outputFilePath}"  -s {start_frame} -e {end_frame} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
     print('after command_string')
+    print(blender_path)
+    print(blend_file)
+    print(outputFilePath)
+    print(start_frame)
+    print(end_frame)
     # Execute the command
     subprocess.run(command_string, shell=True)
     
