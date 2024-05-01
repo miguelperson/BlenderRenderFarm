@@ -18,8 +18,7 @@ def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_fold
     subprocess.run(command_string, shell=True)
     
 def zipFile():
-    
-    
+    print('place holder') 
 
 def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}") # prints the ip of the client that connected
@@ -48,7 +47,7 @@ def handle_client(client_socket, address, downloads_folder):
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         renderFile(filepath, start_frame, end_frame, client_socket, downloads_folder)
-        zipFile()
+        # zipFile()
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
