@@ -7,14 +7,19 @@ from tkinter import INSERT
 from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 from pathlib import Path
+import zipfile
 
-def renderFile(blend_file, start_frame, end_frame, client_socket):
+def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_folder):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
     blender_path = '../../../../Program Files/Blender Foundation/Blender 3.6/blender.exe' # relative path to the blender executable file 
-    output_dir = os.path.dirname(blender_path)  # Output to the same directory as the received file
-    command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{os.path.join(output_dir, "###")}"'
+    outputFilePath = os.path.join(downloads_folder,"#####")
+    command_string = f'"{blender_path}" -b "{blend_file}" -o "{outputFilePath}"  -s {start_frame} -e {end_frame} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
     # Execute the command
     subprocess.run(command_string, shell=True)
+    
+def zipFile():
+    
+    
 
 def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}") # prints the ip of the client that connected
@@ -42,7 +47,8 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-        renderFile(filepath, start_frame, end_frame, client_socket)
+        renderFile(filepath, start_frame, end_frame, client_socket, downloads_folder)
+        zipFile()
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
