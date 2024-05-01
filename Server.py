@@ -12,8 +12,11 @@ import zipfile
 def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_folder):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
     blender_path = '../../../../Program Files/Blender Foundation/Blender 3.6/blender.exe' # relative path to the blender executable file 
+    print('after blender path')
     outputFilePath = os.path.join(downloads_folder,"#####")
+    print('after outputFilePath')
     command_string = f'"{blender_path}" -b "{blend_file}" -o "{outputFilePath}"  -s {start_frame} -e {end_frame} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
+    print('after command_string')
     # Execute the command
     subprocess.run(command_string, shell=True)
     
