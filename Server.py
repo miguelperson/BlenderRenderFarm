@@ -13,7 +13,7 @@ def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable 
     outputFilePath = os.path.join(downloads_folder, "####")
     # Construct the command string using the corrected output location
-    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f{start_frame}'
+    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame}'
 
     # Execute the command
     subprocess.run(command_string, shell=True)
