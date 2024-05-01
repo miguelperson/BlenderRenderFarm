@@ -50,7 +50,7 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
                 if not bytes_read:
                     break  # File transmitting is done
                 client.sendall(bytes_read)
-                
+    print(f"File {filename} has been sent.")           
     zip_info = client.recv(1024).decode()
     zip_name, zip_size = zip_info.split(';')
     zip_name = os.path.basename(zip_name)
@@ -66,12 +66,7 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-    
-
-    print(f"File {filename} has been sent.")
-
-
-
+        
 # following code will be for when server responds with the zip files storing the frames of the zip file thats recieved
 def recieverFunction(client, outputFolder):
     zipFileName = client.recv(1028).decode() # recieves file name

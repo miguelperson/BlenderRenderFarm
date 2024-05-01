@@ -63,7 +63,7 @@ def handle_client(client_socket, address, downloads_folder):
         
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
-            start += 1
+            start_frame += 1
         zipFilePath = zipProject(downloads_folder, str(filename)) # storing zip file path
         zipFileSize = os.path.getsize(zipFilePath)
         zipFileName = os.path.basename(zipFilePath)
