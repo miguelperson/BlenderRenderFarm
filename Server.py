@@ -60,7 +60,7 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk) # writes to file
                 bytes_received += len(chunk) # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
-        
+        # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
             start_frame += 1
