@@ -70,7 +70,7 @@ def handle_client(client_socket, address, downloads_folder):
         zipFileInfo = f"{zipFileName};{zipFileSize}"
         client_socket.sendall(zipFileInfo.encode()) # returning to client
         confirmation = client_socket.recv(1024).decode()
-        if confirmation == "INFO_RECIEVED":
+        if confirmation == "INFO_RECEIVED":
             with open(zipFilePath, 'rb') as f:
                 while True:
                     bytes_read = f.read(4096)
