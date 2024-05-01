@@ -50,6 +50,12 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
                 if not bytes_read:
                     break  # File transmitting is done
                 client.sendall(bytes_read)
+                
+    zip_info = client.recv(1024).decode()
+    zip_name, zip_size = zip_info.split(';')
+    zip_name = os.path.basename(zip_name)
+    zip_size = int(zip_size)
+    
 
     print(f"File {filename} has been sent.")
 
