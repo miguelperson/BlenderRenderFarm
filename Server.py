@@ -76,8 +76,9 @@ def handle_proletarian(prol, address,downloads_folder):
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
-    if not os.path.exists(downloads_folder):
-        os.makedirs(downloads_folder) # makes folder if folder dose not exist
+    #if not os.path.exists(downloads_folder):
+    #    os.makedirs(downloads_folder) # makes folder if folder dose not exist
+    DOWNLOADS_FOLDER = str(Path.home() / "Downloads")
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
     server.listen(5)
@@ -94,7 +95,7 @@ def start_server(host, port, downloads_folder):
 #               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
 #               proletarian_thread.start()
 #               print('place holder
-            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, DOWNLOADS_FOLDER))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
     except Exception as e:
