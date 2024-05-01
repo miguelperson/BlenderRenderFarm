@@ -56,8 +56,8 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
     zip_name = os.path.basename(zip_name)
     zip_size = int(zip_size)
     client.send("INFO_RECIEVED").encode()
-    receive_file_path = os.path.join(output_folder,zip_name)
-    with open(recieve_file_path, 'wb') as f:
+    filePath = os.path.join(output_folder,zip_name)
+    with open(filePath, 'wb') as f:
         bytes_recieved = 0
         while bytes_received < filesize: # so long as the bytes_recieved is less than the indicated filesize
                 chunk = client.recv(4096) # recieve 4096 more bytes
