@@ -26,10 +26,12 @@ def zipProject(downloads_folder, fileName):
     zip_file_path = os.path.join(downloads_folder, f"{projName}.zip")
 
     with zipfile.ZipFile(zip_file_path, 'w') as zipf:
-        for root,dirs,files in os.walk(downloads_folder):
+        for root, dirs, files in os.walk(downloads_folder):
             for file in files:
-                if file.endswith(".png"):
-                    zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root,file), downloads_folder))
+                if file.endswith(".png"):  # Assuming rendered frames are PNG files, adjust the extension if necessary
+                    file_path = os.path.join(root, file)
+                    zipf.write(file_path, os.path.relpath(file_path, downloads_folder))
+                    os.remove(file_path)  # Delete the file after zipping
     return zip_file_path
 
 def handle_client(client_socket, address, downloads_folder):
@@ -67,6 +69,14 @@ def handle_client(client_socket, address, downloads_folder):
         zipFileName = os.path.basename(zipFilePath)
         zipFileInfo = f"{zipFileName};{zipFileSize}"
         client_socket.sendall(zipFileInfo.encode()) # returning to client
+        confirmation = client_socket.recv(1024).decode()
+        if confirmation == "INFO_RECIEVED":
+            with open(zipFilePath, 'rb') as f:
+                while True:
+                    bytes_read = f.read(4096)
+                    if not bytes_read:
+                        break
+                    client_socket.sendall(bytes_read)
         
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
