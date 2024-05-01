@@ -10,7 +10,7 @@ from pathlib import Path
 import zipfile
 
 def renderFile(filepath, start_frame, end_frame, downloads_folder):
-    blender_path = r"C:\Program Files\Blender Foundation\Blender 4.1\blender.exe"
+    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable file location
     blend_file = filepath
     outputLocation = os.path.join(downloads_folder, 'frame_#####')  # Use os.path.join to ensure proper path formatting
 
