@@ -9,19 +9,26 @@ from random import randrange
 from pathlib import Path
 import zipfile
 
-def renderFile(blend_file, start_frame, end_frame, client_socket, downloads_folder):
+def renderFile(filepath, start_frame, end_frame, downloads_folder):
     # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
-    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable file 
-    print('after blender path')
-    outputFilePath = os.path.join(downloads_folder,"#####")
-    print('after outputFilePath')
-    command_string = f'"{blender_path}" -b "{blend_file}" -o "{outputFilePath}"  -s {start_frame} -e {end_frame} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
-    print('after command_string')
-    print(blender_path)
-    print(blend_file)
-    print(outputFilePath)
-    print(start_frame)
-    print(end_frame)
+    #blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable file 
+    #print('after blender path')
+    #outputFilePath = os.path.join(downloads_folder,"#####")
+    #print('after outputFilePath')
+    #command_string = f'"{blender_path}" -b "{blend_file}" -o "{outputFilePath}"  -s {start_frame} -e {end_frame} -E CYCLES -F PNG' # creates the command string we will use for rendering in command prompt
+    #print('after command_string')
+    #print(blender_path)
+    #print(blend_file)
+    #print(outputFilePath)
+    #print(start_frame)
+    #print(end_frame)
+    # Execute the command
+    #subprocess.run(command_string, shell=True)
+    # Assuming you have blender_path, output_dir, and blend_file defined elsewhere
+    blender_path = "C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"
+    blend_file = filepath
+    output_dir = os.path.dirname(filepath)  # Output to the same directory as the received file
+    command_string = f'"{blender_path}" "{blend_file}" -b -s {start_frame} -e {end_frame} -a -o "{os.path.join(output_dir, "###")}"'
     # Execute the command
     subprocess.run(command_string, shell=True)
     
