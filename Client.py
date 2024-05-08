@@ -21,7 +21,7 @@ def connectionFunction(HOST, PORT,
         ADDR = (HOST, PORT)
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # this connects to the server
-        # client.sendall(b'worker').encode()
+        # client.sendall('worker'.encode())
         client_IP = socket.gethostbyname(socket.gethostname())
         print(f"Connected to {HOST} on {PORT}")
         return client
