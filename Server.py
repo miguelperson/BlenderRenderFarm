@@ -51,6 +51,8 @@ def handle_client(client_socket, address, downloads_folder):
         if filename == '!DISCONNECT':
             client_socket.socket.close()
             return
+        for i in range(start_frame,end_frame+1): # filling queue
+            frame_queue.put(i)
         confirmation_message = "INFO_RECEIVED"
         client_socket.send(confirmation_message.encode()) # informs client that file info was recieved
         # Prepare to receive the file
