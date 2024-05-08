@@ -98,7 +98,7 @@ def handle_proletarian(worker_socket, address,downloads_folder):
                 print('queue is empty, project is done rendering')
                 break
             worker_socket.send(str(frame_number).encode())
-
+            
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
     #if not os.path.exists(downloads_folder):
@@ -110,21 +110,26 @@ def start_server(host, port, downloads_folder):
     print(f"Server listening on {host}:{port}")
     try:
         while True:
-            client_socket, addr = server.accept()
-            # role = str(client_socket.recv(1024).decode())
-            # personal note: perhaps we would want to move these identifier if conditions to a separate function that gets called?
-#            if role == 'client':
-#                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
-#                client_thread.start()
-#           if role == 'worker':
-#               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
-#               proletarian_thread.start()
-#               print('place holder
-            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, DOWNLOADS_FOLDER))
-            client_thread.start()
-            print(f"[ACTIVE CONNECTIONS] {threading.active_count()-1}") # tells us amount of active connections
+            connection_socket, addr = server.accept()
+            # Receive the identification message to determine if it's a worker or a client
+            identification_message = connection_socket.recv(1024).decode('utf-8').strip()
+
+            if identification_message == 'worker':
+                # Start a worker thread if the connection is identified as a worker
+                worker_thread = threading.Thread(target=handle_worker, args=(connection_socket, addr, downloads_folder))
+                worker_thread.start()
+                print(f"Started worker thread for {addr}")
+            else:
+                # Assume any non-worker identification as a client
+                client_thread = threading.Thread(target=handle_client, args=(connection_socket, addr, downloads_folder))
+                client_thread.start()
+                print(f"Started client thread for {addr}")
+
+            print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
+
     except Exception as e:
         print(f'An error occurred: {e}')
+        server.close()
 
 
 HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs

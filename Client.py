@@ -14,15 +14,16 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 # ADDR = (HOST, PORT)
 counter = 0  # will be used to keep track of the files sent
 
-
-def connectionFunction(HOST, PORT,
-                       error_callback=None):  # is technically called by the front end just to keep it simple, host and port passed from front end
+def connectionFunction(HOST, PORT, error_callback=None):
     try:
         ADDR = (HOST, PORT)
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect(ADDR)  # this connects to the server
-        # client.sendall('worker'.encode())
-        client_IP = socket.gethostbyname(socket.gethostname())
+        client.connect(ADDR)  # Connect to the server
+
+        # Send identification message to indicate it's a client
+        identification_message = 'client'
+        client.sendall(identification_message.encode('utf-8'))
+
         print(f"Connected to {HOST} on {PORT}")
         return client
     except socket.error as e:
@@ -30,6 +31,7 @@ def connectionFunction(HOST, PORT,
         if error_callback:
             error_callback()
         return  # Exit the function or handle the error as needed
+
 
 
 def send_file_to_server(file_path, output_folder, start_frame, end_frame, client, username):
