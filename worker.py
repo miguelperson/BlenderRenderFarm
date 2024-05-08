@@ -47,6 +47,7 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
                 if not bytes_read:
                     break
                 worker.sendall(bytes_read) # send
+    os.remove(renderFilePath)
     
     
 def waitForCommand(worker, downloads_path, blender_path):
