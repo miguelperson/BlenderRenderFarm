@@ -33,42 +33,44 @@ def connectionFunction(HOST, PORT,
 
 
 def send_file_to_server(file_path, output_folder, start_frame, end_frame, client, username):
-    if not os.path.isfile(file_path):  # checks if file exists
-        print(f"File not found: {file_path}")
-        return  # Prepare file info (filename and filesize)
-    filesize = os.path.getsize(file_path)
-    filename = os.path.basename(file_path)
-    file_info = f"{filename};{filesize};{start_frame};{end_frame}"  # sends all the important information as one sort of byte stream
-    # Send file info
-    client.sendall(file_info.encode())
+    try:    
+        if not os.path.isfile(file_path):  # checks if file exists
+            print(f"File not found: {file_path}")
+            return  # Prepare file info (filename and filesize)
+        filesize = os.path.getsize(file_path)
+        filename = os.path.basename(file_path)
+        file_info = f"{filename};{filesize};{start_frame};{end_frame}"  # sends all the important information as one sort of byte stream
+        # Send file info
+        client.sendall(file_info.encode())
 
-    # Wait for confirmation from the server
-    confirmation = client.recv(1024).decode()
-    if confirmation == "INFO_RECEIVED":  # if the recieved message is the confirmation message
-        # Send the file
-        with open(file_path, 'rb') as f:  # opens the file in read byte mode
-            while True:
-                bytes_read = f.read(4096)  # sendn file as chunks so server can recieve in chunks as well
-                if not bytes_read:
-                    break  # File transmitting is done
-                client.sendall(bytes_read)
-    print(f"File {filename} has been sent.")
+        # Wait for confirmation from the server
+        confirmation = client.recv(1024).decode()
+        if confirmation == "INFO_RECEIVED":  # if the recieved message is the confirmation message
+            # Send the file
+            with open(file_path, 'rb') as f:  # opens the file in read byte mode
+                while True:
+                    bytes_read = f.read(4096)  # sendn file as chunks so server can recieve in chunks as well
+                    if not bytes_read:
+                        break  # File transmitting is done
+                    client.sendall(bytes_read)
+        print(f"File {filename} has been sent.")
 
-    zip_info = client.recv(1024).decode()
-    zip_name, zip_size = zip_info.split(';')
-    zip_name = os.path.basename(zip_name)
-    zip_size = int(zip_size)
-    client.send("INFO_RECEIVED".encode())
-    zip_file_path = os.path.join(output_folder, zip_name)
-    with open(zip_file_path, 'wb') as f:
-        bytes_received = 0
-        while bytes_received < zip_size:
-            chunk = client.recv(4096)
-            if not chunk:
-                break
-            f.write(chunk)
-            bytes_received += len(chunk)
-        #client.send("INFO_RECEIVED".encode())
+        zip_info = client.recv(1024).decode()
+        zip_name, zip_size = zip_info.split(';')
+        zip_name = os.path.basename(zip_name)
+        zip_size = int(zip_size)
+        client.send("INFO_RECEIVED".encode())
+        zip_file_path = os.path.join(output_folder, zip_name)
+        with open(zip_file_path, 'wb') as f:
+            bytes_received = 0
+            while bytes_received < zip_size:
+                chunk = client.recv(4096)
+                if not chunk:
+                    break
+                f.write(chunk)
+                bytes_received += len(chunk)
+            #client.send("INFO_RECEIVED".encode())
+    finally:
         print(f"File {filename} has been received and saved.")
 
 
