@@ -8,6 +8,10 @@ from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 from pathlib import Path
 import zipfile
+from queue import Queue, Empty
+
+frame_queue = Queue()
+queue_lock = threading.Lock()
 
 def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable 
@@ -84,10 +88,16 @@ def handle_client(client_socket, address, downloads_folder):
         
     
         
-def handle_proletarian(prol, address,downloads_folder):
+def handle_proletarian(worker_socket, address,downloads_folder):
     print(f'Worker computer: {address} has connected')
-    while True:
-        renderProject = get_recent_project() # projectID, project_name, start_frame, end_frame
+    try:
+        while not frame_queue.empty():
+            try:
+                frame_number = frame_queue.get_nowait()
+            except Empty:
+                print('queue is empty, project is done rendering')
+                break
+            worker_socket.send(str(frame_number).encode())
 
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists

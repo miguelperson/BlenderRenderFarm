@@ -9,9 +9,8 @@ from pathlib import Path
 import threading
 
 worker = None
-FORMAT = 'utf-8'
 HEADER = 1024
-confirmation_message = 'INFO_RECIEVED'
+confirmation_message = 'INFO_RECEIVED'
 
 def connect():
     HOST = '192.168.99.124'
@@ -38,7 +37,7 @@ def render_third_frame(worker, blender_path, filePath, downloads_path): # render
         return
     fileSize = os.path.getsize(renderFilePath)
     fileInfo = f'{outputFileName};{fileSize}'
-    worker.sendall(fileInfo) # send
+    worker.sendall(fileInfo) # send filename;filesize
     confirmation = worker.recv(HEADER).decode() # recieve confirmation
     if confirmation == "INFO_RECIEVED":
         with open(renderFilePath,'rb') as f:
@@ -54,7 +53,7 @@ def waitForCommand(worker, downloads_path, blender_path):
         fileInfo = worker.recv().decode(HEADER) # name;file size
         fileName, fileSize = fileInfo.split(';')
         worker.send(confirmation_message.encode()) # send
-        filePath = os.path.join(downloads_path, fileName)
+        filePath = os.path.join(downloads_path, fileName) #.../downloads/'filename'
         with open(filePath, 'wb') as f: # recieve the blend file
             bytes_recieved = 0
             while bytes_recieved < fileSize:
@@ -63,7 +62,7 @@ def waitForCommand(worker, downloads_path, blender_path):
                     break
                 f.write(chunk)
                 bytes_recieved += len(chunk)
-        worker.send(confirmation_message.encode) # send
+        worker.send(confirmation_message.encode) # recieve confirmation
         renderThread = threading.Thread(target = render_third_frame, args =(worker, blender_path, filePath, downloads_path))
         renderThread.start()
         
