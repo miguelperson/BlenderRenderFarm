@@ -45,7 +45,7 @@ def handle_client(client_socket, address, downloads_folder):
         start_frame = int(start_frame)
         end_frame = int(end_frame)
         if filename == '!DISCONNECT':
-            client_socket.socket.close
+            client_socket.socket.close()
             return
         confirmation_message = "INFO_RECEIVED"
         client_socket.send(confirmation_message.encode()) # informs client that file info was recieved
@@ -77,10 +77,12 @@ def handle_client(client_socket, address, downloads_folder):
                     if not bytes_read:
                         break
                     client_socket.sendall(bytes_read)
-        
+                #client_socket.recv(1024).decode()
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}") # prints any exceptions that may come from the code
+        
+    
         
 def handle_proletarian(prol, address,downloads_folder):
     print(f'Worker computer: {address} has connected')

@@ -68,6 +68,7 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
                 break
             f.write(chunk)
             bytes_received += len(chunk)
+        #client.send("INFO_RECEIVED".encode())
         print(f"File {filename} has been received and saved.")
 
 
