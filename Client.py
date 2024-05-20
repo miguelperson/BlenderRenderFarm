@@ -21,8 +21,8 @@ def connectionFunction(HOST, PORT, error_callback=None):
         client.connect(ADDR)  # Connect to the server
 
         # Send identification message to indicate it's a client
-        identification_message = 'client'
-        client.sendall(identification_message.encode('utf-8'))
+        #identification_message = 'client'
+        #client.sendall(identification_message.encode('utf-8'))
 
         print(f"Connected to {HOST} on {PORT}")
         return client

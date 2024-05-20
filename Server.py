@@ -8,10 +8,9 @@ from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 from pathlib import Path
 import zipfile
-from queue import Queue, Empty
+import queue
 
-frame_queue = Queue()
-queue_lock = threading.Lock()
+frame_queue = queue.Queue()
 
 def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable 
@@ -112,7 +111,12 @@ def start_server(host, port, downloads_folder):
     print(f"Server listening on {host}:{port}")
     try:
         while True:
-            connection_socket, addr = server.accept()
+            client_socket, addr = server.accept()
+            
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, DOWNLOADS_FOLDER))
+            client_thread.start()
+            print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
+            '''
             # Receive the identification message to determine if it's a worker or a client
             identification_message = connection_socket.recv(1024).decode('utf-8').strip()
 
@@ -128,7 +132,7 @@ def start_server(host, port, downloads_folder):
                 print(f"Started client thread for {addr}")
 
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
-
+            '''
     except Exception as e:
         print(f'An error occurred: {e}')
         server.close()

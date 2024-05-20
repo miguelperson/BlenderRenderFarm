@@ -19,8 +19,8 @@ def connect():
     worker = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     worker.connect(ADDR) # connects to the server
     worker_IP = socket.gethostbyname(socket.gethostbyname)
-    identification_message = 'worker'
-    worker.sendall(identification_message.encode())
+    #identification_message = 'worker'
+    #worker.sendall(identification_message.encode())
     return worker
 
 
