@@ -19,7 +19,6 @@ def connect():
     worker = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     worker.connect(ADDR) # connects to the server
     worker.sendall(b'worker')
-    worker_IP = socket.gethostbyname(socket.gethostbyname)
     return worker
 
 
