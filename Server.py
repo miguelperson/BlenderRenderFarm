@@ -102,17 +102,14 @@ def start_server(host, port, downloads_folder):
     try:
         while True:
             client_socket, addr = server.accept()
-            # role = str(client_socket.recv(1024).decode())
-            # personal note: perhaps we would want to move these identifier if conditions to a separate function that gets called?
-            #            if role == 'client':
-            #                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
-            #                client_thread.start()
-            #           if role == 'worker':
-            #               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
-            #               proletarian_thread.start()
-            #               print('place holder
-            client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, DOWNLOADS_FOLDER))
-            client_thread.start()
+            role = client_socket.recv(1024).decode()
+            if role == 'client':
+                print('this is a client')
+                client_thread = threading.Thread(target=client_socket(), args=(client_socket,addr,DOWNLOADS_FOLDER)
+                client_thread.run()
+            if role == 'worker':
+                handle_proletarian = threading.Thread(target=handle_proletarian(), args=(client_socket,addr, DOWNLOADS_FOLDER))
+                handle_proletarian.run()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
     except Exception as e:
         print(f'An error occurred: {e}')
