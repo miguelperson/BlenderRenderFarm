@@ -72,7 +72,7 @@ def handle_client(client_socket, address, downloads_folder):
         zipFileSize = os.path.getsize(zipFilePath)
         zipFileName = os.path.basename(zipFilePath)
         zipFileInfo = f"{zipFileName};{zipFileSize}"
-        client_socket.sendall(zipFileInfo.encode())  # returning to client
+        client_socket.sendall(zipFileInfo.encode())  # returning to cliente
         confirmation = client_socket.recv(1024).decode()
         if confirmation == "INFO_RECEIVED":
             with open(zipFilePath, 'rb') as f:
@@ -94,9 +94,6 @@ def handle_proletarian(prol, address, downloads_folder):
 
 
 def start_server(host, port, downloads_folder):
-    # Ensure the downloads folder exists
-    # if not os.path.exists(downloads_folder):
-    #    os.makedirs(downloads_folder) # makes folder if folder dose not exist
     DOWNLOADS_FOLDER = str(Path.home() / "Downloads")
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))

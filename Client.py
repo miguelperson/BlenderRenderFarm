@@ -19,11 +19,7 @@ def connectionFunction(HOST, PORT, error_callback=None):
         ADDR = (HOST, PORT)
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)  # Connect to the server
-
-        # Send identification message to indicate it's a client
-        #identification_message = 'client'
-        #client.sendall(identification_message.encode('utf-8'))
-
+        client.sendall(b'client')
         print(f"Connected to {HOST} on {PORT}")
         return client
     except socket.error as e:
