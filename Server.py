@@ -4,27 +4,25 @@ import threading
 import os
 import subprocess
 from tkinter import INSERT
-from manipulateDB import insert_into_project, get_recent_project
+# from manipulateDB import insert_into_project, get_recent_project
 from random import randrange
 from pathlib import Path
 import zipfile
-import queue
 
-frame_queue = queue.Queue()
 
 def renderFile(filepath, start_frame, downloads_folder):
-    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe' # relative path to the blender executable 
+    blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe'  # relative path to the blender executable
     outputFilePath = os.path.join(downloads_folder, "####")
     # Construct the command string using the corrected output location
-    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame}'
+    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame} -E CYCLES -- --cycles-device CUDA+CPU'
 
     # Execute the command
     subprocess.run(command_string, shell=True)
     print(f"Rendering completed: Files are saved in {downloads_folder}")
 
-    
+
 def zipProject(downloads_folder, fileName):
-    temp= fileName.split('.')
+    temp = fileName.split('.')
     projName = temp[0]
     zip_file_path = os.path.join(downloads_folder, f"{projName}.zip")
 
@@ -37,43 +35,44 @@ def zipProject(downloads_folder, fileName):
                     os.remove(file_path)  # Delete the file after zipping
     return zip_file_path
 
+
 def handle_client(client_socket, address, downloads_folder):
-    print(f"Connected to {address}") # prints the ip of the client that connected
+    print(f"Connected to {address}")  # prints the ip of the client that connected
     try:
         # Receive file info (filename and filesize)
-        file_info = client_socket.recv(1024).decode() # recieve the file info from client, is holding code, will wait here until client sends code
-        filename, filesize, start_frame, end_frame = file_info.split(';') # saves each corresponding attribute to their respective variable
+        file_info = client_socket.recv(
+            1024).decode()  # recieve the file info from client, is holding code, will wait here until client sends code
+        filename, filesize, start_frame, end_frame = file_info.split(
+            ';')  # saves each corresponding attribute to their respective variable
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
         start_frame = int(start_frame)
         end_frame = int(end_frame)
         if filename == '!DISCONNECT':
-            client_socket.socket.close()
+            client_socket.socket.close
             return
-        for i in range(start_frame,end_frame+1): # filling queue
-            frame_queue.put(i)
         confirmation_message = "INFO_RECEIVED"
-        client_socket.send(confirmation_message.encode()) # informs client that file info was recieved
+        client_socket.send(confirmation_message.encode())  # informs client that file info was recieved
         # Prepare to receive the file
         filepath = os.path.join(downloads_folder, filename)
-        with open(filepath, 'wb') as f: # opens file path location in write byte mode
-            bytes_received = 0 # will keep track of the recieved bytes
-            while bytes_received < filesize: # so long as the bytes_recieved is less than the indicated filesize
-                chunk = client_socket.recv(4096) # recieve 4096 more bytes
-                if not chunk: # if the chunk ends up not being the full 4096 bytes
+        with open(filepath, 'wb') as f:  # opens file path location in write byte mode
+            bytes_received = 0  # will keep track of the recieved bytes
+            while bytes_received < filesize:  # so long as the bytes_recieved is less than the indicated filesize
+                chunk = client_socket.recv(4096)  # recieve 4096 more bytes
+                if not chunk:  # if the chunk ends up not being the full 4096 bytes
                     break  # finishes recieving
-                f.write(chunk) # writes to file
-                bytes_received += len(chunk) # would just append whats left at this point
+                f.write(chunk)  # writes to file
+                bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
             start_frame += 1
-        zipFilePath = zipProject(downloads_folder, str(filename)) # storing zip file path
+        zipFilePath = zipProject(downloads_folder, str(filename))  # storing zip file path
         zipFileSize = os.path.getsize(zipFilePath)
         zipFileName = os.path.basename(zipFilePath)
         zipFileInfo = f"{zipFileName};{zipFileSize}"
-        client_socket.sendall(zipFileInfo.encode()) # returning to client
+        client_socket.sendall(zipFileInfo.encode())  # returning to client
         confirmation = client_socket.recv(1024).decode()
         if confirmation == "INFO_RECEIVED":
             with open(zipFilePath, 'rb') as f:
@@ -82,27 +81,21 @@ def handle_client(client_socket, address, downloads_folder):
                     if not bytes_read:
                         break
                     client_socket.sendall(bytes_read)
-                #client_socket.recv(1024).decode()
+
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
-        print(f"An error occurred:{e}") # prints any exceptions that may come from the code
-        
-    
-        
-def handle_proletarian(worker_socket, address,downloads_folder):
+        print(f"An error occurred:{e}")  # prints any exceptions that may come from the code
+
+
+def handle_proletarian(prol, address, downloads_folder):
     print(f'Worker computer: {address} has connected')
-    try:
-        while not frame_queue.empty():
-            try:
-                frame_number = frame_queue.get_nowait()
-            except Empty:
-                print('queue is empty, project is done rendering')
-                break
-            worker_socket.send(str(frame_number).encode())
-            
+    while True:
+        renderProject = get_recent_project()  # projectID, project_name, start_frame, end_frame
+
+
 def start_server(host, port, downloads_folder):
     # Ensure the downloads folder exists
-    #if not os.path.exists(downloads_folder):
+    # if not os.path.exists(downloads_folder):
     #    os.makedirs(downloads_folder) # makes folder if folder dose not exist
     DOWNLOADS_FOLDER = str(Path.home() / "Downloads")
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -112,34 +105,24 @@ def start_server(host, port, downloads_folder):
     try:
         while True:
             client_socket, addr = server.accept()
-            
+            # role = str(client_socket.recv(1024).decode())
+            # personal note: perhaps we would want to move these identifier if conditions to a separate function that gets called?
+            #            if role == 'client':
+            #                client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, downloads_folder))
+            #                client_thread.start()
+            #           if role == 'worker':
+            #               proletarian_thread = threading.Thread(target= handle_proletarian, args = (client_socket, addr, downloads_folder))
+            #               proletarian_thread.start()
+            #               print('place holder
             client_thread = threading.Thread(target=handle_client, args=(client_socket, addr, DOWNLOADS_FOLDER))
             client_thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
-            '''
-            # Receive the identification message to determine if it's a worker or a client
-            identification_message = connection_socket.recv(1024).decode('utf-8').strip()
-
-            if identification_message == 'worker':
-                # Start a worker thread if the connection is identified as a worker
-                worker_thread = threading.Thread(target=handle_worker, args=(connection_socket, addr, downloads_folder))
-                worker_thread.start()
-                print(f"Started worker thread for {addr}")
-            else:
-                # Assume any non-worker identification as a client
-                client_thread = threading.Thread(target=handle_client, args=(connection_socket, addr, downloads_folder))
-                client_thread.start()
-                print(f"Started client thread for {addr}")
-
-            print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")  # tells us amount of active connections
-            '''
     except Exception as e:
         print(f'An error occurred: {e}')
-        server.close()
 
 
 HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
-PORT = 65432        # Port to listen on
+PORT = 65432  # Port to listen on
 DOWNLOADS_FOLDER = str(Path.home() / "Downloads")  # Path to the folder where files will be saved
-print(HOST) # prints the server IP address
+print(HOST)  # prints the server IP address
 start_server(HOST, PORT, DOWNLOADS_FOLDER)
