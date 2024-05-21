@@ -42,12 +42,14 @@ def handle_client(client_socket, address, downloads_folder):
         # Receive file info (filename and filesize)
         file_info = client_socket.recv(
             1024).decode()  # recieve the file info from client, is holding code, will wait here until client sends code
-        filename, filesize, start_frame, end_frame = file_info.split(
+        filePath, filesize, start_frame, end_frame = file_info.split(
             ';')  # saves each corresponding attribute to their respective variable
-        filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
+        filename = os.path.basename(filePath)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
         start_frame = int(start_frame)
         end_frame = int(end_frame)
+        print(f'file path is {filePath}')
+        print(f'file name is {filename}')
         if filename == '!DISCONNECT':
             client_socket.socket.close
             return
