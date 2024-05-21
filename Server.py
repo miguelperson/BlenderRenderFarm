@@ -8,7 +8,9 @@ from tkinter import INSERT
 from random import randrange
 from pathlib import Path
 import zipfile
+import queue
 
+frames_queue = queue.Queue()
 
 def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe'  # relative path to the blender executable
