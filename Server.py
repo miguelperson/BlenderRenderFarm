@@ -9,8 +9,11 @@ from random import randrange
 from pathlib import Path
 import zipfile
 import queue
+import time
 
 frames_queue = queue.Queue()
+
+isRendering = False
 
 
 def renderFile(filepath, start_frame, downloads_folder):
@@ -67,6 +70,9 @@ def handle_client(client_socket, address, downloads_folder):
                 bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
+        while isRendering == True:
+            sleep(5)
+        isRendering = True
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
             start_frame += 1
@@ -83,7 +89,7 @@ def handle_client(client_socket, address, downloads_folder):
                     if not bytes_read:
                         break
                     client_socket.sendall(bytes_read)
-
+        isRendering = False
         # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}")  # prints any exceptions that may come from the code

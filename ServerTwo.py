@@ -11,6 +11,7 @@ import zipfile
 import queue
 
 frames_queue = queue.Queue()
+isRendering = False
 
 
 def renderFile(filepath, start_frame, downloads_folder):
@@ -67,9 +68,8 @@ def handle_client(client_socket, address, downloads_folder):
                 bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
-        while start_frame <= end_frame:
-            renderFile(filepath, start_frame, downloads_folder)
-            start_frame += 1
+        for i in range(start_frame, 1+end_frame):
+            print('place holder')
         zipFilePath = zipProject(downloads_folder, str(filename))  # storing zip file path
         zipFileSize = os.path.getsize(zipFilePath)
         zipFileName = os.path.basename(zipFilePath)
