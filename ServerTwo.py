@@ -8,18 +8,29 @@ from tkinter import INSERT
 from random import randrange
 from pathlib import Path
 import zipfile
+import sqlite3
 import queue
-import time
 
-frames_queue = queue.Queue()
-isRendering = False
+HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
+PORT = 65432  # Port to listen on
+DOWNLOADS_FOLDER = str(Path.home() / "Downloads")  # Path to the folder where files will be saved
+print(HOST)  # prints the server IP address
+HEADER = 1024
+FORMAT = 'utf-8'
+framesToRender = queue.Queue()
 
+conn = sqlite3.connect('render_farm.db')
+cursor = conn.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, username TEXT, ip TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS workers (id INTEGER PRIMARY KEY, ip TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS blenderProjects (id INTEGER PRIMARY KEY, username TEXT, file_path TEXT, start_frame INTEGER, end_frame INTEGER, completed BOOLEAN)''')
+conn.commit()
 
 def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe'  # relative path to the blender executable
     outputFilePath = os.path.join(downloads_folder, "####")
     # Construct the command string using the corrected output location
-    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame} -E CYCLES -- --cycles-device CUDA+CPU'
+    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame}'
 
     # Execute the command
     subprocess.run(command_string, shell=True)
@@ -40,12 +51,20 @@ def zipProject(downloads_folder, fileName):
                     os.remove(file_path)  # Delete the file after zipping
     return zip_file_path
 
-
+'''def handle_client(client_socket, address, downloads_folder):
+    print('place holder')
+    try:
+        file_info = client_socket.recv(HEADER).decode(FORMAT)
+        fileName, fileSize, startFrame, endFrame, username = file_info.split(';')
+    except Exception as e:
+        print(f'error of type: {e}')
+'''
 def handle_client(client_socket, address, downloads_folder):
     print(f"Connected to {address}")  # prints the ip of the client that connected
     try:
         # Receive file info (filename and filesize)
-        file_info = client_socket.recv(1024).decode()  # recieve the file info from client, is holding code, will wait here until client sends code
+        file_info = client_socket.recv(
+            1024).decode()  # recieve the file info from client, is holding code, will wait here until client sends code
         filename, filesize, start_frame, end_frame = file_info.split(
             ';')  # saves each corresponding attribute to their respective variable
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
@@ -69,17 +88,14 @@ def handle_client(client_socket, address, downloads_folder):
                 bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
-        while isRendering == True:
-            sleep(5)
-        isRendering = True
-        for i in range(start_frame, 1+end_frame):
-            print(f'putting in frame #{i} into the list')
-            frames_queue.put(i)
+        while start_frame <= end_frame:
+            renderFile(filepath, start_frame, downloads_folder)
+            start_frame += 1
         zipFilePath = zipProject(downloads_folder, str(filename))  # storing zip file path
         zipFileSize = os.path.getsize(zipFilePath)
         zipFileName = os.path.basename(zipFilePath)
         zipFileInfo = f"{zipFileName};{zipFileSize}"
-        client_socket.sendall(zipFileInfo.encode())  # returning to cliente
+        client_socket.sendall(zipFileInfo.encode())  # returning to client
         confirmation = client_socket.recv(1024).decode()
         if confirmation == "INFO_RECEIVED":
             with open(zipFilePath, 'rb') as f:
@@ -88,16 +104,13 @@ def handle_client(client_socket, address, downloads_folder):
                     if not bytes_read:
                         break
                     client_socket.sendall(bytes_read)
-        isRendering = False # reset global variable
-        # insert_into_project(randrange(9999), address, filepath, (end_frame - start_frame), start_frame, end_frame, False) # def insert_into_project(projectID, client, project_name, ames_total, start_frame, end_frame, completed):
     except Exception as e:
         print(f"An error occurred:{e}")  # prints any exceptions that may come from the code
-
 
 def handle_proletarian(prol, address, downloads_folder):
     print(f'Worker computer: {address} has connected')
     while True:
-        renderProject = get_recent_project()  # projectID, project_name, start_frame, end_frame
+        print('place holder')
 
 
 def start_server(host, port, downloads_folder):
@@ -121,8 +134,4 @@ def start_server(host, port, downloads_folder):
         print(f'An error occurred: {e}')
 
 
-HOST = socket.gethostbyname(socket.gethostname())  # Server's IP. Use '0.0.0.0' to accept connections from all IPs
-PORT = 65432  # Port to listen on
-DOWNLOADS_FOLDER = str(Path.home() / "Downloads")  # Path to the folder where files will be saved
-print(HOST)  # prints the server IP address
 start_server(HOST, PORT, DOWNLOADS_FOLDER)
