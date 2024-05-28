@@ -18,6 +18,7 @@ print(HOST)  # prints the server IP address
 HEADER = 1024
 FORMAT = 'utf-8'
 framesToRender = queue.Queue()
+renderingFlag = False
 
 conn = sqlite3.connect('render_farm.db')
 cursor = conn.cursor()
@@ -112,6 +113,13 @@ def handle_proletarian(prol, address, downloads_folder):
     while True:
         print('place holder')
 
+def render_manager():
+    while True:
+        if not renderingFlag: # if not rendering renderingFlag == False
+            cursor.execute('SELECT * FROM blenderProjects ORDER BY id ASC LIMIT 1')
+            project = cursor.fetchone()
+            if project: # recieved info is not null
+                project_id, username, file_path, start_frame, end_frame = project
 
 def start_server(host, port, downloads_folder):
     DOWNLOADS_FOLDER = str(Path.home() / "Downloads")
@@ -119,6 +127,8 @@ def start_server(host, port, downloads_folder):
     server.bind((host, port))
     server.listen(5)
     print(f"Server listening on {host}:{port}")
+    renderManager = threading.Thread(target=render_manager)
+    renderManager.start()
     try:
         while True:
             client_socket, addr = server.accept()
