@@ -113,7 +113,7 @@ def start_server(host, port, downloads_folder):
             role = client_socket.recv(1024).decode()
             if role == 'client':
                 print('this is a client')
-                client_thread = threading.Thread(target=client_socket(), args=(client_socket,addr,DOWNLOADS_FOLDER)
+                client_thread = threading.Thread(target=client_socket(), args=(client_socket,addr,DOWNLOADS_FOLDER))
                 client_thread.run()
             if role == 'worker':
                 handle_proletarian = threading.Thread(target=handle_proletarian(), args=(client_socket,addr, DOWNLOADS_FOLDER))
