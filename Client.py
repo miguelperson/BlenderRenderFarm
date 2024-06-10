@@ -37,7 +37,7 @@ def send_file_to_server(file_path, output_folder, start_frame, end_frame, client
             return  # Prepare file info (filename and filesize)
         filesize = os.path.getsize(file_path)
         filename = os.path.basename(file_path)
-        file_info = f"{filename};{filesize};{start_frame};{end_frame}"  # sends all the important information as one sort of byte stream
+        file_info = f"{filename};{filesize};{start_frame};{end_frame};{username}"  # sends all the important information as one sort of byte stream
         # Send file info
         client.sendall(file_info.encode())
 

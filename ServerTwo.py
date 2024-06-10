@@ -22,7 +22,7 @@ renderingFlag = False
 
 conn = sqlite3.connect('render_farm.db')
 cursor = conn.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, username TEXT, ip TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, username TEXT, projectName TEXT, filePath TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS workers (id INTEGER PRIMARY KEY, ip TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS blenderProjects (id INTEGER PRIMARY KEY, username TEXT, file_path TEXT, start_frame INTEGER, end_frame INTEGER, completed BOOLEAN)''')
 conn.commit()
@@ -31,8 +31,7 @@ def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe'  # relative path to the blender executable
     outputFilePath = os.path.join(downloads_folder, "####")
     # Construct the command string using the corrected output location
-    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame}'
-
+    command_string = f'"{blender_path}" "{filepath}" -o "{outputFilePath}" -b -f {start_frame} -E CYCLES -- --cycles-device CUDA+CPU'
     # Execute the command
     subprocess.run(command_string, shell=True)
     print(f"Rendering completed: Files are saved in {downloads_folder}")
@@ -60,14 +59,12 @@ def zipProject(downloads_folder, fileName):
     except Exception as e:
         print(f'error of type: {e}')
 '''
-def handle_client(client_socket, address, downloads_folder):
+def handle_client(client_socket, address, downloads_folder, username):
     print(f"Connected to {address}")  # prints the ip of the client that connected
     try:
         # Receive file info (filename and filesize)
-        file_info = client_socket.recv(
-            1024).decode()  # recieve the file info from client, is holding code, will wait here until client sends code
-        filename, filesize, start_frame, end_frame = file_info.split(
-            ';')  # saves each corresponding attribute to their respective variable
+        file_info = client_socket.recv(1024).decode()  # recieve the file info from client
+        filename, filesize, start_frame, end_frame = file_info.split(';')
         filename = os.path.basename(filename)  # Ensure filename is just a name, not a path
         filesize = int(filesize)
         start_frame = int(start_frame)
@@ -88,6 +85,7 @@ def handle_client(client_socket, address, downloads_folder):
                 f.write(chunk)  # writes to file
                 bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
+        projectDB = 'INSERT INTO blenderProjects VALUES (username,filename,filepath)'
         # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
         while start_frame <= end_frame:
             renderFile(filepath, start_frame, downloads_folder)
