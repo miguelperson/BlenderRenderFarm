@@ -19,13 +19,28 @@ HEADER = 1024
 FORMAT = 'utf-8'
 framesToRender = queue.Queue()
 renderingFlag = False
+currentProject = None
 
 conn = sqlite3.connect('render_farm.db')
 cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, username TEXT, projectName TEXT, filePath TEXT)''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS workers (id INTEGER PRIMARY KEY, ip TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS completedProjects (id INTEGER PRIMARY KEY, username TEXT, filepath)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS blenderProjects (id INTEGER PRIMARY KEY, username TEXT, file_path TEXT, start_frame INTEGER, end_frame INTEGER, completed BOOLEAN)''')
 conn.commit()
+
+class ActiveProject:
+    def __init__(self,fileName,filePath,username):
+        self.fileName = fileName
+        self.fileName = filePath
+        self.username = username
+
+def set_project_active(fileName, filePath, username):
+    global currentProject
+    currentProject = ActiveProject(fileName, filePath, username)
+
+def clear_currentProject():
+    global currentProject
+    currentProject = None
 
 def renderFile(filepath, start_frame, downloads_folder):
     blender_path = '../../../../Program Files/Blender Foundation/Blender 4.1/blender.exe'  # relative path to the blender executable
@@ -51,14 +66,6 @@ def zipProject(downloads_folder, fileName):
                     os.remove(file_path)  # Delete the file after zipping
     return zip_file_path
 
-'''def handle_client(client_socket, address, downloads_folder):
-    print('place holder')
-    try:
-        file_info = client_socket.recv(HEADER).decode(FORMAT)
-        fileName, fileSize, startFrame, endFrame, username = file_info.split(';')
-    except Exception as e:
-        print(f'error of type: {e}')
-'''
 def handle_client(client_socket, address, downloads_folder, username):
     print(f"Connected to {address}")  # prints the ip of the client that connected
     try:
@@ -86,23 +93,8 @@ def handle_client(client_socket, address, downloads_folder, username):
                 bytes_received += len(chunk)  # would just append whats left at this point
         print(f"File {filename} has been received and saved.")
         projectDB = 'INSERT INTO blenderProjects VALUES (username,filename,filepath)'
-        # below this code is the rendering and transmitting rendered project ------------------------------------------------------------
-        while start_frame <= end_frame:
-            renderFile(filepath, start_frame, downloads_folder)
-            start_frame += 1
-        zipFilePath = zipProject(downloads_folder, str(filename))  # storing zip file path
-        zipFileSize = os.path.getsize(zipFilePath)
-        zipFileName = os.path.basename(zipFilePath)
-        zipFileInfo = f"{zipFileName};{zipFileSize}"
-        client_socket.sendall(zipFileInfo.encode())  # returning to client
-        confirmation = client_socket.recv(1024).decode()
-        if confirmation == "INFO_RECEIVED":
-            with open(zipFilePath, 'rb') as f:
-                while True:
-                    bytes_read = f.read(4096)
-                    if not bytes_read:
-                        break
-                    client_socket.sendall(bytes_read)
+        cursor.execute(projectDB)
+        conn.commit()
     except Exception as e:
         print(f"An error occurred:{e}")  # prints any exceptions that may come from the code
 
