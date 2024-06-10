@@ -105,11 +105,12 @@ def handle_proletarian(prol, address, downloads_folder):
 
 def render_manager():
     while True:
-        if not renderingFlag: # if not rendering renderingFlag == False
-            cursor.execute('SELECT * FROM blenderProjects ORDER BY id ASC LIMIT 1')
+        if not renderingFlag: # if renderingFlag == False
+            cursor.execute('SELECT * FROM blenderProjects ORDER BY id ASC LIMIT 1') # blenderProjects (id INTEGER PRIMARY KEY, username TEXT, file_path TEXT, start_frame INTEGER, end_frame INTEGER, completed BOOLEAN)
             project = cursor.fetchone()
             if project: # recieved info is not null
-                project_id, username, file_path, start_frame, end_frame = project
+                project_id, username, file_path, start_frame, end_frame, statusBoolean = project
+                
 
 def start_server(host, port, downloads_folder):
     DOWNLOADS_FOLDER = str(Path.home() / "Downloads")
