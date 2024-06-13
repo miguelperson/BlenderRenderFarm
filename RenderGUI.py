@@ -9,11 +9,11 @@ root.title("Render Table")
 
 # Define colors and styles for the dark theme
 background_color = "#333333"
-header_color = "#666666"
+header_color = "#787878"
 text_color = "#FFFFFF"
 header_font = ("Helvetica", 12, 'bold')
 data_font = ("Arial", 10)
-row_colors = ["#333333", "#404040"]
+row_colors = ["#333333", "#4a4a4a"]
 
 # Database connection function
 def connection():
