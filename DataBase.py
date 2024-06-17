@@ -22,14 +22,14 @@ mycursor.execute("CREATE DATABASE renderdb")
 #----------------------------------------------------------------------------------2
 
 mysql
-# Create Tables - Mikaela :) :)
+
 """
 
-#mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255), project_name VARCHAR(255), start_frame smallint UNSIGNED, end_frame smallint UNSIGNED, completed ENUM('1', '2', '3'))") 
+#mycursor.execute("CREATE TABLE project (projectID INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255), project_name VARCHAR(255), start_frame smallint UNSIGNED, end_frame smallint UNSIGNED, completed ENUM('1', '2', '3'))")
 #mycursor.execute("CREATE TABLE workers (workerIP VARCHAR(15), available TINYINT(1), current_project INT, FOREIGN KEY (current_project) REFERENCES project(projectID))")
 #TINYINT(1) = true
 #mycursor.execute("CREATE TABLE render (frame_number smallint UNSIGNED, projectID INT, FOREIGN KEY (projectID) REFERENCES project(projectID))")
-#mycursor.execute("CREATE TABLE performance(projectID INT, project_name VARCHAR(255), workerIP VARCHAR(15), frames_total smallint UNSIGNED, time_total VARCHAR(100), start_time VARCHAR(100), end_time VARCHAR(100), worker1_avg_time VARCHAR(100), worker2_avg_time VARCHAR(100))")         
+#mycursor.execute("CREATE TABLE performance(projectID INT, project_name VARCHAR(255), workerIP VARCHAR(15), frames_total smallint UNSIGNED, time_total VARCHAR(100), start_time VARCHAR(100), end_time VARCHAR(100), worker1_avg_time VARCHAR(100), worker2_avg_time VARCHAR(100))")
 
 """
 #----------------------------------------------------------------------------------
