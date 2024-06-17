@@ -1,12 +1,54 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Miguel2\\source\\repos\\BlenderRenderFarm\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\DataBase.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DataBase.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\mainGUI.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:mainGUI.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "mainGUI.py",
+              "DocumentMoniker": "C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\mainGUI.py",
+              "RelativeDocumentMoniker": "mainGUI.py",
+              "ToolTip": "C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\mainGUI.py",
+              "RelativeToolTip": "mainGUI.py",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-06-13T17:27:04.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DataBase.py",
+              "DocumentMoniker": "C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\DataBase.py",
+              "RelativeDocumentMoniker": "DataBase.py",
+              "ToolTip": "C:\\Users\\Victoria Ten\\Documents\\BlenderRender\\BlenderRenderFarm\\DataBase.py",
+              "RelativeToolTip": "DataBase.py",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-06-13T17:25:45.557Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
